@@ -12,6 +12,8 @@ import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.viewholders.CoverItemListViewHolder;
 import in.informationworks.learnaptcomic.viewholders.SingleCoverViewHolder;
+import in.informationworks.learnaptcomic.viewholders.SingleItemListViewHolder;
+import in.informationworks.learnaptcomic.viewholders.SingleComicCardViewHolder;
 
 /**
  * Created by Riya on 10-Jan-17.
@@ -37,6 +39,15 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }else if(viewType == CommonRecyclerItem.TYPE_SINGLE_COVER){
             rootView = inflater.inflate(R.layout.vh_single_cover_item,parent,false);
             return new SingleCoverViewHolder(rootView);
+        }else if(viewType == CommonRecyclerItem.TYPE_SINGLE_ITEM){
+            rootView = inflater.inflate(R.layout.vh_single_comic_card,parent,false);
+            return new SingleComicCardViewHolder(rootView);
+        }else if(viewType == CommonRecyclerItem.TYPE_SECTION_DATA){
+            rootView = inflater.inflate(R.layout.vh_comic_card_list,parent,false);
+            return new SingleItemListViewHolder(rootView);
+
+
+
         }
         return null;
     }
@@ -49,6 +60,12 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 return;
             case CommonRecyclerItem.TYPE_SINGLE_COVER:
                 ((SingleCoverViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
+                return;
+            case CommonRecyclerItem.TYPE_SINGLE_ITEM:
+                ((SingleComicCardViewHolder)holder).bindCRI(context,recyclerItems.get(position));
+                return;
+            case CommonRecyclerItem.TYPE_SECTION_DATA:
+                ((SingleItemListViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
                 return;
         }
     }

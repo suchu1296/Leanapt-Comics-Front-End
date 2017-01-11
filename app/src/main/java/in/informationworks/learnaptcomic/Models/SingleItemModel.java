@@ -11,7 +11,7 @@ public class SingleItemModel {
     private String name;
     private String url;
     private String description;
-   // private ImageView itemImage1;
+   // private ImageView comic_card_image1;
 
 
     public SingleItemModel() {
