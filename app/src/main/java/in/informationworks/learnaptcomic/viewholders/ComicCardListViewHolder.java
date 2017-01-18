@@ -18,13 +18,13 @@ import in.informationworks.learnaptcomic.R;
  * Created by Riya on 10-Jan-17.
  */
 
-public class SingleItemListViewHolder extends RecyclerView.ViewHolder {
+public class ComicCardListViewHolder extends RecyclerView.ViewHolder {
 
     RecyclerView recyclerview_comic_card_list;
     HomeAdapter homeAdapter;
     List<SingleItemModel> singleItemModels;
     List<CommonRecyclerItem> recyclerItems;
-    public SingleItemListViewHolder(View itemView) {
+    public ComicCardListViewHolder(View itemView) {
         super(itemView);
         recyclerview_comic_card_list=(RecyclerView)itemView.findViewById(R.id.recyclerview_comic_card_list);
     }

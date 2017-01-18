@@ -1,10 +1,12 @@
 package in.informationworks.learnaptcomic;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //toolbar = (Toolbar) findViewById(R.id.toolbar);
        /* allSampleData = new ArrayList<SectionDataModel>();
         allData= new ArrayList<SingleCoverMain>();
 */
@@ -103,7 +105,11 @@ public class HomeActivity extends AppCompatActivity {
                allSampleData.add(sectionDataModel);
            }
        }*/
-
+    public void On_SeeAll_Button_Click(View view)
+    {
+        Intent featuredComicsIntent = new Intent(this,FeaturedComicsActivity.class);
+        startActivity(featuredComicsIntent);
+    }
 
 
 }

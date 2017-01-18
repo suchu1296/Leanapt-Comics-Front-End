@@ -12,7 +12,7 @@ import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.viewholders.CoverItemListViewHolder;
 import in.informationworks.learnaptcomic.viewholders.SingleCoverViewHolder;
-import in.informationworks.learnaptcomic.viewholders.SingleItemListViewHolder;
+import in.informationworks.learnaptcomic.viewholders.ComicCardListViewHolder;
 import in.informationworks.learnaptcomic.viewholders.SingleComicCardViewHolder;
 
 /**
@@ -44,7 +44,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
             return new SingleComicCardViewHolder(rootView);
         }else if(viewType == CommonRecyclerItem.TYPE_SECTION_DATA){
             rootView = inflater.inflate(R.layout.vh_comic_card_list,parent,false);
-            return new SingleItemListViewHolder(rootView);
+            return new ComicCardListViewHolder(rootView);
 
 
 
@@ -65,7 +65,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 ((SingleComicCardViewHolder)holder).bindCRI(context,recyclerItems.get(position));
                 return;
             case CommonRecyclerItem.TYPE_SECTION_DATA:
-                ((SingleItemListViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
+                ((ComicCardListViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
                 return;
         }
     }
