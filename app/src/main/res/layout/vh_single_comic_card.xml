@@ -19,9 +19,9 @@
             android:id="@+id/comic_card_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:src="@drawable/ic_menu_share"
             android:layout_gravity="center_horizontal"
-            android:scaleType="fitCenter"
-            android:src="@color/colorPrimary" />
+            android:background="@color/colorPrimary" />
 
 
         <TextView

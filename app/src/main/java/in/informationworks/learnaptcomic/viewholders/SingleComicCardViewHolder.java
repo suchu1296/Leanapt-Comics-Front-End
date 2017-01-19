@@ -6,7 +6,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
+import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 
 /**
@@ -26,7 +29,10 @@ public class SingleComicCardViewHolder extends RecyclerView.ViewHolder {
     }
     public void bindCRI(Context context, CommonRecyclerItem recyclerItem)
     {
+        SingleItemModel singleItemModel = (SingleItemModel)recyclerItem.getItem();
+        comic_card_text.setText(singleItemModel.getName());
 
+        Picasso.with(context).load(singleItemModel.getImageUrl()).error(R.drawable.ic_menu_manage).into(comic_card_image);
     }
 }
 

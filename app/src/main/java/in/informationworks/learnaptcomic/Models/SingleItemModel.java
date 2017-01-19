@@ -1,6 +1,13 @@
 package in.informationworks.learnaptcomic.Models;
 
+import android.content.Context;
 import android.widget.ImageView;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.squareup.picasso.Picasso;
+
+import in.informationworks.learnaptcomic.R;
 
 /**
  * Created by Riya on 04-Jan-17.
@@ -8,27 +15,22 @@ import android.widget.ImageView;
 
 public class SingleItemModel {
 
+    @SerializedName("id")
+    @Expose
+    private int id;
+    @SerializedName("name")
+    @Expose
     private String name;
-    private String url;
-    private String description;
-   // private ImageView comic_card_image1;
+    @SerializedName("image_url")
+    @Expose
+    private String imageUrl;
 
-
-    public SingleItemModel() {
+    public int getId() {
+        return id;
     }
 
-    public SingleItemModel(String name, String url) {
-        this.name = name;
-        this.url = url;
-    }
-
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -39,12 +41,13 @@ public class SingleItemModel {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getImageUrl() {
+       // return "https://s3.amazonaws.com/learnapt/uploads/item_image/image/392/thumb/From+Trade+to+Territory2.jpg";
+        return imageUrl;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 
