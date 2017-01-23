@@ -1,5 +1,6 @@
 package in.informationworks.learnaptcomic;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,17 +28,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
+
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 
 public class FeaturedComicsActivity extends AppCompatActivity {
     HomeAdapter homeAdapter;
     ArrayList<CommonRecyclerItem> recyclerItems;
-    List<SingleItemModel> receivedComicsData;
+    List<SingleItemModel> comicDataModels;
+
+    Context context;
+    int loadedPages=0;
 
     /** Android Views **/
     RelativeLayout activityFeaturedComics;
     android.support.v7.widget.RecyclerView recyclerviewFeaturedComics;
+
     /** Android Views **/
 
     /**
@@ -53,71 +59,60 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_featured_comics);
         bindViews();
+        prepareRecyclerView();
+        startFetchingData();
+    }
+
+    private void startFetchingData() {
+        loadedPages =0;
+        comicDataModels = new ArrayList<>();
+        recyclerItems = new ArrayList<>();
+        homeAdapter = new HomeAdapter(this,recyclerItems);
+        recyclerviewFeaturedComics.setAdapter(homeAdapter);
+        loadNextDataFromApi();
+    }
+
+    private void prepareRecyclerView() {
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(context,3);
+        recyclerviewFeaturedComics.setLayoutManager(gridLayoutManager);
+    }
+
+    private void setDataInRecyclerView(List<SingleItemModel> receivedComicsData) {
+        comicDataModels.addAll(receivedComicsData);
+        for (SingleItemModel singleItemModel : receivedComicsData) {
+            recyclerItems.add(new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_ITEM,singleItemModel));
+        }
+        homeAdapter.notifyItemRangeInserted(comicDataModels.size()-receivedComicsData.size(),receivedComicsData.size());
+    }
+
+    public void loadNextDataFromApi()
+    {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.2.30:3000/api/mobile/v1/home/featured-comics.json";
-        // Request a string response from the provided URL.
+        String url ="http://192.168.2.30:3000/api/mobile/v1/home/featured-comics.json?page="+(loadedPages+1);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        // mTextView.setText("Response is: "+ response.substring(0,500));
-                       // Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                        loadedPages++;
                         JsonObject jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
                         JsonArray jComicsArray = jsonObject.getAsJsonArray("comics");
                         Type listType = new TypeToken<ArrayList<SingleItemModel>>(){}.getType();
-                        receivedComicsData = new Gson().fromJson(jComicsArray,listType);
-                        setDataInRecyclerView();
+                        List<SingleItemModel> receivedComicsData = new Gson().fromJson(jComicsArray,listType);
+                        setDataInRecyclerView(receivedComicsData);
+                        if(jsonObject.get("totalentries").getAsInt()>comicDataModels.size()) {
+                            loadNextDataFromApi();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-              //  mTextView.setText("That didn't work!");
+                //  mTextView.setText("That didn't work!");
             }
         });
 
         queue.add(stringRequest);
-
-
-/*
-       // Picasso.with(this).load("https://s3.amazonaws.com/learnapt/uploads/item_image/image/1926/ch3_2_1.jpg").into(imageView);
-        recyclerItems =new ArrayList<>();
-               recyclerItems = new ArrayList<>();
-        createAllFeaturedComicList();
-        RecyclerView recyclerview_featured_comics = (RecyclerView) findViewById(R.id.recyclerview_featured_comics);
-       // recyclerview_featured_comics.setHasFixedSize(true);
-        homeAdapter = new HomeAdapter(this,recyclerItems);
-        recyclerview_featured_comics.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
-        recyclerview_featured_comics.setAdapter(homeAdapter);*/
-
-
-
-
-
-
     }
 
-    private void setDataInRecyclerView() {
-        recyclerItems = new ArrayList<>();
-        for (SingleItemModel singleItemModel : receivedComicsData) {
-            recyclerItems.add(new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_ITEM,singleItemModel));
-        }
-        homeAdapter = new HomeAdapter(this,recyclerItems);
-        recyclerviewFeaturedComics.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
-        recyclerviewFeaturedComics.setAdapter(homeAdapter);
-    }
 
-    private void createAllFeaturedComicList() {
-
-        List singleItems=new ArrayList();
-        for (int i = 0; i < 21; i++) {
-
-                singleItems.add(new SingleItemModel());
-                CommonRecyclerItem i1 = new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_ITEM, singleItems);
-                recyclerItems.add(i1);
-
-
-        }
-    }
 
 }
