@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:text="Section Sample"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/black" />
 
     <Button
         android:id="@+id/see_all_button"
@@ -37,6 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
-        android:background="@color/material_deep_teal_200"/>
+       />
 
 </LinearLayout>

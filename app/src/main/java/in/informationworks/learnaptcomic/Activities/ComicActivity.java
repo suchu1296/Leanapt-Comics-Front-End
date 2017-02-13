@@ -1,7 +1,9 @@
-package in.informationworks.learnaptcomic;
+package in.informationworks.learnaptcomic.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import in.informationworks.learnaptcomic.R;
 
 public class ComicActivity extends AppCompatActivity {
 

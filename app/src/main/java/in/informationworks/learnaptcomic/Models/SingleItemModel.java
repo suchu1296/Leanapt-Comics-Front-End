@@ -15,6 +15,9 @@ import in.informationworks.learnaptcomic.R;
 
 public class SingleItemModel {
 
+    public static final String EXTRA_ID = "extraID";
+    public static final String EXTRA_IMAGE_URL = "extraImageURL";
+    public static final String EXTRA_NAME = "extraName";
     @SerializedName("id")
     @Expose
     private int id;

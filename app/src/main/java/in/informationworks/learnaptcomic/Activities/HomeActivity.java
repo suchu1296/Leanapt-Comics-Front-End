@@ -1,4 +1,4 @@
-package in.informationworks.learnaptcomic;
+package in.informationworks.learnaptcomic.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +16,7 @@ import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.CoverItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
+import in.informationworks.learnaptcomic.R;
 
 public class HomeActivity extends AppCompatActivity {
 

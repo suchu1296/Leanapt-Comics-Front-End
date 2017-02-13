@@ -1,10 +1,11 @@
-package in.informationworks.learnaptcomic;
+package in.informationworks.learnaptcomic.Activities;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import in.informationworks.learnaptcomic.Adapters.ComicImagePlayerAdapter;
+import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.Views.HackyViewPager;
 
 public class ComicImagePlayerActivity extends AppCompatActivity {

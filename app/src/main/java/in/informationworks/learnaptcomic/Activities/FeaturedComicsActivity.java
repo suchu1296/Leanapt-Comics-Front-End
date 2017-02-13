@@ -1,4 +1,4 @@
-package in.informationworks.learnaptcomic;
+package in.informationworks.learnaptcomic.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +33,7 @@ import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
 
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
+import in.informationworks.learnaptcomic.R;
 
 public class FeaturedComicsActivity extends AppCompatActivity {
     HomeAdapter homeAdapter;

@@ -10,17 +10,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeActivity">
+        <activity android:name=".Activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ComicActivity" />
-        <activity android:name=".FeaturedComicsActivity" />
+        <activity android:name=".Activities.ComicActivity" />
+        <activity android:name=".Activities.FeaturedComicsActivity" />
         <activity android:name=".ComicPlayerActivity" />
-        <activity android:name=".ComicImagePlayerActivity"></activity>
+        <activity android:name=".Activities.ComicImagePlayerActivity" />
+        <activity android:name=".Activities.ComicDetailsActivity"></activity>
     </application>
 
 </manifest>
