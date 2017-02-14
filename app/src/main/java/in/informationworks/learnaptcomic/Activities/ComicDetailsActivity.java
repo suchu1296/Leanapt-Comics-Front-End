@@ -90,7 +90,6 @@ public class ComicDetailsActivity extends AppCompatActivity {
                         JsonObject coverImageObject = comicObject.get("cover_image").getAsJsonObject();
                         comicImageURL = coverImageObject.get("compressed_image_url").getAsString();
                         Picasso.with(getApplicationContext()).load(comicImageURL).error(R.drawable.ic_menu_manage).into(imageView4);
-
                         Toast.makeText(getApplicationContext(),comicname+":"+comicpages+":"+comicImageURL,Toast.LENGTH_LONG).show();
                         comicName.setText(comicname);
                         comicPages.setText(comicpages);
@@ -111,6 +110,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
     public void onReadNow(View view)
     {
         Intent comicDetailsIntent = new Intent(this,ComicImagePlayerActivity.class);
+        comicDetailsIntent.putExtra("comicID",comicID);
         startActivity(comicDetailsIntent);
     }
 

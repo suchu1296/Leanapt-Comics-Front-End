@@ -10,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
 import in.informationworks.learnaptcomic.R;
 
 /**
@@ -17,19 +21,20 @@ import in.informationworks.learnaptcomic.R;
  */
 
 public class ComicImagePlayerAdapter extends PagerAdapter {
-    private int[] image_resources={R.drawable.a1,R.drawable.a2,R.drawable.a3,R.drawable.a4};
+    private ArrayList<String> image_resources;//={R.drawable.a1,R.drawable.a2,R.drawable.a3,R.drawable.a4};
     private Context context;
     private LayoutInflater layoutInflater;
 
-
-
-    public ComicImagePlayerAdapter(Context context)
-    {
-        this.context=context;
+    public ComicImagePlayerAdapter(ArrayList<String> image_resources, Context context) {
+        this.image_resources = image_resources;
+        this.context = context;
     }
+
+
     @Override
-    public int getCount() {
-        return image_resources.length;
+    public int getCount()
+    {
+        return image_resources.size();
     }
 
     @Override
@@ -41,10 +46,9 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         layoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View item_view=layoutInflater.inflate(R.layout.swip_layout_image_player,container,false);
-        ImageView imageView = (ImageView)item_view.findViewById(R.id.comic_image_player_image);
-        TextView textView = (TextView)item_view.findViewById(R.id.image_count);
-        imageView.setImageResource(image_resources[position]);
-        textView.setText("Image No:"+position);
+        ImageView photoView = (ImageView)item_view.findViewById(R.id.comic_image_player_photoview);
+        Picasso.with(context).load(image_resources.get(position)).error(R.drawable.ic_menu_manage).into(photoView);
+        //photoView.setImageResource(Integer.parseInt(image_resources[position]));
         container.addView(item_view);
         return item_view;
     }

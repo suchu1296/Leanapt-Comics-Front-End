@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/image_count"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hello rabbit"
-        android:textSize="25dp"
-        android:textStyle="bold"/>
-
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
 
     <uk.co.senab.photoview.PhotoView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/comic_image_player_image"
+        android:id="@+id/comic_image_player_photoview"
         android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
