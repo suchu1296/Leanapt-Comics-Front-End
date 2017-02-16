@@ -1,9 +1,20 @@
 package in.informationworks.learnaptcomic.Activities;
 
+
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,23 +37,38 @@ import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.Views.HackyViewPager;
 
 import static android.R.attr.id;
+import static android.R.attr.visible;
 
 public class ComicImagePlayerActivity extends AppCompatActivity {
     ViewPager viewPager;
     int comicID;
     String originalImageUrl;
     public ArrayList<String> image_resources;
+    public RelativeLayout overlay;
+    JsonArray comicImageArray;
+    JsonObject jsonObject;
+
 
     ComicImagePlayerAdapter comicImagePlayerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_comic_image_player);
         viewPager=(HackyViewPager)findViewById(R.id.comic_image_player_viewpager);
+        overlay = (RelativeLayout) findViewById(R.id.relative_overlay);
         readIntent();
         getData(comicID);
+        addClickListener();
     }
+
+    private void addClickListener() {
+
+    }
+
     private void readIntent()
     {
         comicID=getIntent().getIntExtra("comicID",-1);
@@ -57,18 +83,18 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         image_resources = new ArrayList<>();
-                        JsonObject jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
+                        jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
                         JsonObject comicObject = jsonObject.get("comic").getAsJsonObject();
-                        JsonArray comicImageArray = comicObject.getAsJsonArray("comic_images");
+                        comicImageArray = comicObject.getAsJsonArray("comic_images");
                         for (int i = 0; i < comicImageArray.size(); i++) {
-                           JsonObject image;
+                            JsonObject image;
                             image = comicImageArray.get(i).getAsJsonObject();
                             originalImageUrl=image.get("original_image_url").getAsString();
-                            Toast.makeText(getApplicationContext(),originalImageUrl,Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(),originalImageUrl,Toast.LENGTH_LONG).show();
                             image_resources.add(originalImageUrl);
 
                         }
-                        comicImagePlayerAdapter= new ComicImagePlayerAdapter(image_resources,getApplicationContext());
+                        comicImagePlayerAdapter= new ComicImagePlayerAdapter(image_resources,getApplicationContext(),ComicImagePlayerActivity.this);
                         viewPager.setAdapter(comicImagePlayerAdapter);
 
 
@@ -82,4 +108,27 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
 
         queue.add(stringRequest);
     }
+    public void onPhotoViewClick()
+    {
+        if(overlay.getVisibility()!=View.VISIBLE) {
+            overlay.setVisibility(View.VISIBLE);
+            Toast.makeText(getApplicationContext(), "visibility yes", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            overlay.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "visibility gone", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    public void onGridViewClick(View view)
+    {
+
+        Intent i = new Intent(this,ComicImagesGridActivity.class);
+        i.putExtra("comicID",comicID);
+        i.putExtra("jsonObject",jsonObject.toString());
+        startActivity(i);
+    }
+
+
 }

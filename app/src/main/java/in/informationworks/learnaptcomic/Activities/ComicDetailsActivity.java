@@ -1,8 +1,11 @@
 package in.informationworks.learnaptcomic.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,6 +32,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
+import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
+import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
+import in.informationworks.learnaptcomic.Models.CoverItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 
@@ -45,17 +52,27 @@ public class ComicDetailsActivity extends AppCompatActivity {
     TextView pagesLabel;
     TextView comicPages;
     Button readNowButton;
+    android.support.v7.widget.RecyclerView previewRecyclerView;
+    Context context;
+    HomeAdapter homeAdapter;
+    ArrayList<CommonRecyclerItem> recyclerItems;
+    JsonObject jsonObject,comicObject;
+    List<ComicCardPreviewItem> receivedComicImages;
+    JsonArray comicImagePreviewArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_details);
         bindViews();
         readIntent();
+        prepareRecyclerView();
         getData(comicID);
-
-        //Toast.makeText(getApplicationContext(),temp1,Toast.LENGTH_LONG).show();
+        startFetchingData();
     }
+
+
     private void bindViews(){
+        previewRecyclerView = (android.support.v7.widget.RecyclerView) findViewById(R.id.preview_recycler_view);
         imageView4 = (ImageView) findViewById(R.id.imageView4);
         nameLable = (TextView) findViewById(R.id.nameLable);
         comicName = (TextView) findViewById(R.id.comicName);
@@ -66,12 +83,15 @@ public class ComicDetailsActivity extends AppCompatActivity {
         readNowButton = (Button) findViewById(R.id.readNowButton);
     }
 
-    private void readIntent() {
+    private void readIntent()
+    {
      comicID=getIntent().getIntExtra(SingleItemModel.EXTRA_ID,-1);
-       // comicImageURL=getIntent().getStringExtra(SingleItemModel.EXTRA_IMAGE_URL);
-
-        //comicname=getIntent().getStringExtra(SingleItemModel.EXTRA_NAME);
         Toast.makeText(this, "comic id:"+comicID+" : "+comicname, Toast.LENGTH_SHORT).show();
+    }
+
+    private void prepareRecyclerView() {
+        recyclerItems = new ArrayList<>();
+        previewRecyclerView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
     }
 
     private void getData(int comicID) {
@@ -82,8 +102,8 @@ public class ComicDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
-                        JsonObject jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
-                        JsonObject comicObject = jsonObject.get("comic").getAsJsonObject();
+                        jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
+                        comicObject = jsonObject.get("comic").getAsJsonObject();
                         comicname=comicObject.get("name").getAsString();
                         comicpages=comicObject.get("pages_count").getAsString();
                         comicsize=comicObject.get("size").getAsString();
@@ -94,6 +114,10 @@ public class ComicDetailsActivity extends AppCompatActivity {
                         comicName.setText(comicname);
                         comicPages.setText(comicpages);
                         comicSize.setText(comicsize);
+                        comicImagePreviewArray = comicObject.getAsJsonArray("comic_images");
+                        Type listType = new TypeToken<ArrayList<ComicCardPreviewItem>>(){}.getType();
+                        receivedComicImages = new Gson().fromJson(comicImagePreviewArray,listType);
+                        setDataInRecyclerView();
 
 
 
@@ -107,11 +131,26 @@ public class ComicDetailsActivity extends AppCompatActivity {
 
         queue.add(stringRequest);
     }
+
     public void onReadNow(View view)
     {
         Intent comicDetailsIntent = new Intent(this,ComicImagePlayerActivity.class);
         comicDetailsIntent.putExtra("comicID",comicID);
         startActivity(comicDetailsIntent);
+    }
+
+    private void startFetchingData()
+    {
+        homeAdapter = new HomeAdapter(this,recyclerItems);
+        previewRecyclerView.setAdapter(homeAdapter);
+    }
+
+    private void setDataInRecyclerView()
+    {
+        for (ComicCardPreviewItem comicCardPreviewItem : receivedComicImages) {
+            recyclerItems.add(new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE,comicCardPreviewItem));
+        }
+
     }
 
 }

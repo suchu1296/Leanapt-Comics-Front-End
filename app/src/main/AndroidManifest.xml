@@ -19,9 +19,13 @@
         </activity>
         <activity android:name=".Activities.ComicActivity" />
         <activity android:name=".Activities.FeaturedComicsActivity" />
-        <activity android:name=".ComicPlayerActivity" />
-        <activity android:name=".Activities.ComicImagePlayerActivity" />
-        <activity android:name=".Activities.ComicDetailsActivity"></activity>
+        <activity
+            android:name=".Activities.ComicImagePlayerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.ComicDetailsActivity" />
+
+        <activity android:name=".Activities.ComicImagesGridActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

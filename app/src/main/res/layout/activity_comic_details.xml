@@ -7,6 +7,10 @@
     android:layout_height="match_parent"
     tools:context="in.informationworks.learnaptcomic.Activities.ComicDetailsActivity">
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relative2">
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,4 +81,12 @@
             android:onClick="onReadNow"
             android:text="Read Now"/>
     </LinearLayout>
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/preview_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relative2"
+        android:layout_marginTop="10dp"
+        />
 </RelativeLayout>

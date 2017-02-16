@@ -13,4 +13,50 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
     </in.informationworks.learnaptcomic.Views.HackyViewPager>
-</RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relative_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/linearCustomAppbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorRed"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:orientation="horizontal"
+            android:gravity="right">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView_custom_appbar_title"
+                    android:text="hello"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+
+                <TextView
+                    android:id="@+id/textView_custom_appbar_subTitle"
+                    android:text="android"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView_custom_appbar_title"
+                    android:layout_width="wrap_content" />
+                <Button
+                    android:text="G"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_alignParentRight="true"
+                    android:onClick="onGridViewClick"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+    </RelativeLayout>
