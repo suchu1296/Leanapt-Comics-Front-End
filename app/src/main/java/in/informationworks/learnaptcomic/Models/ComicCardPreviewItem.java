@@ -8,9 +8,25 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class ComicCardPreviewItem {
+    public static final String EXTRA_ORDER = "extraOrder";
+    public static final String EXTRA_ID = "extraID";
     @SerializedName("thumb_image_url")
     @Expose
     private String thumbImageUrl;
+    @SerializedName("order")
+    @Expose
+    private String order;
+    @SerializedName("id")
+    @Expose
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getThumbImageUrl() {
         // return "https://s3.amazonaws.com/learnapt/uploads/item_image/image/392/thumb/From+Trade+to+Territory2.jpg";
@@ -19,5 +35,13 @@ public class ComicCardPreviewItem {
 
     public void setThumbImageUrl(String thumbImageUrl) {
         this.thumbImageUrl = thumbImageUrl;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
     }
 }

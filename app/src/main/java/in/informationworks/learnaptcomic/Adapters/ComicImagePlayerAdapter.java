@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -60,12 +61,14 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
                 comicImagePlayerActivity.onPhotoViewClick();
             }
         });
-        Picasso.with(context).load(image_resources.get(position)).error(R.drawable.ic_menu_manage).into(photoView);
+        Picasso.with(context).load(image_resources.get(position)).error(R.mipmap.ic_launcher).into(photoView);
         container.addView(item_view);
         return item_view;
 
 
     }
+
+
     @Override
     public void destroyItem(ViewGroup container,int position,Object object) {
        container.removeView((LinearLayout)object);

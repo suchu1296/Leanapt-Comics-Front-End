@@ -41,6 +41,7 @@ import static in.informationworks.learnaptcomic.R.id.recyclerview_featured_comic
 
 public class ComicImagesGridActivity extends AppCompatActivity {
 
+    public static final String SCROLL_INDEX = "ScrollIndex";
     HomeAdapter homeAdapter;
     ArrayList<CommonRecyclerItem> recyclerItems;
     int comicID;
@@ -102,7 +103,11 @@ public class ComicImagesGridActivity extends AppCompatActivity {
     {
         recyclerItems = new ArrayList<>();
         for (ComicCardPreviewItem comicCardPreviewItem : receivedComicImages) {
-            recyclerItems.add(new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE,comicCardPreviewItem));
+            CommonRecyclerItem commonRecyclerItem=new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE,comicCardPreviewItem);
+            List<Object> options=new ArrayList<>();
+            options.add(ComicImagesGridActivity.this);
+            commonRecyclerItem.setOptions(options);
+            recyclerItems.add(commonRecyclerItem);
         }
     }
 
@@ -129,5 +134,13 @@ public class ComicImagesGridActivity extends AppCompatActivity {
     public void onCloseGrid(View view)
     {
         ComicImagesGridActivity.this.finish();
+    }
+
+    public void onCardPreviewClicked(ComicCardPreviewItem comicCardPreviewItem) {
+        int index=receivedComicImages.indexOf(comicCardPreviewItem);
+        Intent intent=new Intent();
+        intent.putExtra(SCROLL_INDEX,index);
+        setResult(RESULT_OK,intent);
+        finish();
     }
 }

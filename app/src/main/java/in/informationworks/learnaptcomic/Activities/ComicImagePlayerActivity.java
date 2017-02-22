@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,13 +34,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.informationworks.learnaptcomic.Adapters.ComicImagePlayerAdapter;
+import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
+import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.Views.HackyViewPager;
 
 import static android.R.attr.id;
 import static android.R.attr.visible;
+//import static in.informationworks.learnaptcomic.R.id.simpleProgressBar;
 
 public class ComicImagePlayerActivity extends AppCompatActivity {
+    private static final int INDEX_OF_PAGE_TO_SCROLL = 111;
     ViewPager viewPager;
     int comicID;
     String originalImageUrl;
@@ -47,6 +52,9 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
     public RelativeLayout overlay;
     JsonArray comicImageArray;
     JsonObject jsonObject;
+    int order;
+    TextView order_text;
+    ProgressBar progressBar;
 
 
     ComicImagePlayerAdapter comicImagePlayerAdapter;
@@ -60,9 +68,11 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comic_image_player);
         viewPager=(HackyViewPager)findViewById(R.id.comic_image_player_viewpager);
         overlay = (RelativeLayout) findViewById(R.id.relative_overlay);
+       // progressBar = (ProgressBar) findViewById(simpleProgressBar);
         readIntent();
         getData(comicID);
         addClickListener();
+        order_text= (TextView) findViewById(R.id.order_text);
     }
 
     private void addClickListener() {
@@ -127,8 +137,24 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
         Intent i = new Intent(this,ComicImagesGridActivity.class);
         i.putExtra("comicID",comicID);
         i.putExtra("jsonObject",jsonObject.toString());
-        startActivity(i);
+        startActivityForResult(i,INDEX_OF_PAGE_TO_SCROLL);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==INDEX_OF_PAGE_TO_SCROLL){
+            if(resultCode==RESULT_OK){
+                int index=data.getIntExtra(ComicImagesGridActivity.SCROLL_INDEX,viewPager.getCurrentItem());
+                viewPager.setCurrentItem(index);
+            }
+        }
+    }
 
+   /* public void startClick(View view)
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        Toast.makeText(getApplicationContext(), "hello world", Toast.LENGTH_SHORT).show();
+
+    }*/
 }

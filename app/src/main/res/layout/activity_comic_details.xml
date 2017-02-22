@@ -89,4 +89,18 @@
         android:layout_below="@+id/relative2"
         android:layout_marginTop="10dp"
         />
+    <TextView
+        android:text="Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/preview_recycler_view"
+        android:id="@+id/descriptionLabel" />
+    <TextView
+        android:text="TextDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/preview_recycler_view"
+        android:id="@+id/description" />
+
+
 </RelativeLayout>
