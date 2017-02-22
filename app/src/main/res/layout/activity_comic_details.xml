@@ -7,14 +7,15 @@
     android:layout_height="match_parent"
     tools:context="in.informationworks.learnaptcomic.Activities.ComicDetailsActivity">
 
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/relative2">
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/a1"
         android:id="@+id/imageView4"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -34,7 +35,6 @@
             android:id="@+id/nameLable" />
 
         <TextView
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/comicName"
@@ -52,7 +52,6 @@
             android:id="@+id/sizeLabel" />
 
         <TextView
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView18"
@@ -69,7 +68,6 @@
             android:id="@+id/pagesLabel" />
 
         <TextView
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView21"

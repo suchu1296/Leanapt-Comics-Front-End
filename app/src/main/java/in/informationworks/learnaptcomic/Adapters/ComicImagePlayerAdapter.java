@@ -47,7 +47,7 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return (view==(LinearLayout)object);
+        return (view==(RelativeLayout)object);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container,int position,Object object) {
-       container.removeView((LinearLayout)object);
+       container.removeView((View)object);
     }
 
 
