@@ -6,9 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,15 +63,35 @@ public class ComicDetailsActivity extends AppCompatActivity {
     JsonObject jsonObject,comicObject;
     List<ComicCardPreviewItem> receivedComicImages;
     JsonArray comicImagePreviewArray;
+    RelativeLayout commicDetailsContent;
+    Toolbar comicDetailsToolbar;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_details);
         bindViews();
+        setComicDetailsToolbar();
         readIntent();
         prepareRecyclerView();
         getData(comicID);
         startFetchingData();
+    }
+
+    private void setComicDetailsToolbar()
+    {
+        setSupportActionBar(comicDetailsToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        comicDetailsToolbar.setTitle("Comic");
+        comicDetailsToolbar.setTitleTextColor(0xFFFFFFFF);
+        comicDetailsToolbar.setNavigationIcon(R.drawable.leftaero);
+        comicDetailsToolbar.setNavigationOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                ComicDetailsActivity.this.finish();
+            }
+        });
     }
 
 
@@ -81,6 +105,9 @@ public class ComicDetailsActivity extends AppCompatActivity {
         pagesLabel = (TextView) findViewById(R.id.pagesLabel);
         comicPages = (TextView) findViewById(R.id.comicPages);
         readNowButton = (Button) findViewById(R.id.readNowButton);
+        commicDetailsContent = (RelativeLayout) findViewById(R.id.all_content);
+        progressBar = (ProgressBar) findViewById(R.id.comic_details_progressbar);
+        comicDetailsToolbar = (Toolbar) findViewById(R.id.comic_details_toolbar);
     }
 
     private void readIntent()
@@ -117,6 +144,9 @@ public class ComicDetailsActivity extends AppCompatActivity {
                         Type listType = new TypeToken<ArrayList<ComicCardPreviewItem>>(){}.getType();
                         receivedComicImages = new Gson().fromJson(comicImagePreviewArray,listType);
                         setDataInRecyclerView();
+                        commicDetailsContent.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
+
 
 
 
@@ -150,6 +180,38 @@ public class ComicDetailsActivity extends AppCompatActivity {
             recyclerItems.add(new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE,comicCardPreviewItem));
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_comic_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+
+        if(id == R.id.action_like){
+            Toast.makeText(this,"like",Toast.LENGTH_LONG).show();
+        }
+        if(id == R.id.action_share){
+            Toast.makeText(this,"share",Toast.LENGTH_LONG).show();
+        }
+        if(id == R.id.action_cart){
+            Toast.makeText(this,"cart",Toast.LENGTH_LONG).show();
+        }
+        if(id == R.id.action_settings){
+            Toast.makeText(this,"setting",Toast.LENGTH_LONG).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

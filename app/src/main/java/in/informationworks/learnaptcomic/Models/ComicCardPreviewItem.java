@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class ComicCardPreviewItem {
     public static final String EXTRA_ORDER = "extraOrder";
     public static final String EXTRA_ID = "extraID";
-    @SerializedName("thumb_image_url")
+    @SerializedName("compressed_image_url")
     @Expose
     private String thumbImageUrl;
     @SerializedName("order")

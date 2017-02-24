@@ -7,19 +7,45 @@
     android:layout_height="match_parent"
     tools:context="in.informationworks.learnaptcomic.Activities.ComicDetailsActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/comic_details_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        />
+    <ProgressBar
+        android:id="@+id/comic_details_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="#FF0000"
+        android:layout_centerInParent="true"
+        />
+
+
 
     <RelativeLayout
+        android:id="@+id/all_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/comic_details_toolbar"
+        android:visibility="gone">
+
+        <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/relative2">
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:id="@+id/imageView4"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -78,6 +104,9 @@
             android:id="@+id/readNowButton"
             android:onClick="onReadNow"
             android:text="Read Now"/>
+
+
+
     </LinearLayout>
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView
@@ -100,5 +129,5 @@
         android:layout_below="@+id/preview_recycler_view"
         android:id="@+id/description" />
 
-
+    </RelativeLayout>
 </RelativeLayout>

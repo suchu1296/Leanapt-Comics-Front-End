@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -39,10 +43,10 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     HomeAdapter homeAdapter;
     ArrayList<CommonRecyclerItem> recyclerItems;
     List<SingleItemModel> comicDataModels;
-
     Context context;
     int loadedPages=0;
-
+    Toolbar featuredComicsToolbar;
+    ProgressBar progressbar;
     /** Android Views **/
     RelativeLayout activityFeaturedComics;
     android.support.v7.widget.RecyclerView recyclerviewFeaturedComics;
@@ -53,17 +57,37 @@ public class FeaturedComicsActivity extends AppCompatActivity {
      * Binds XML views
      * Call this function after setContentView() in onCreate().
      **/
-    private void bindViews(){
-        activityFeaturedComics = (RelativeLayout) findViewById(R.id.activity_featured_comics);
-        recyclerviewFeaturedComics = (android.support.v7.widget.RecyclerView) findViewById(R.id.recyclerview_featured_comics);
-    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_featured_comics);
         bindViews();
+        setFeaturedComicsToolbar();
         prepareRecyclerView();
         startFetchingData();
+    }
+
+    private void bindViews(){
+        activityFeaturedComics = (RelativeLayout) findViewById(R.id.activity_featured_comics);
+        recyclerviewFeaturedComics = (android.support.v7.widget.RecyclerView) findViewById(R.id.recyclerview_featured_comics);
+        featuredComicsToolbar = (Toolbar) findViewById(R.id.featured_comics_toolbar);
+    }
+
+    private void setFeaturedComicsToolbar()
+    {
+        setSupportActionBar(featuredComicsToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        featuredComicsToolbar.setTitle("FeaturedComics");
+        featuredComicsToolbar.setTitleTextColor(0xFFFFFFFF);
+        featuredComicsToolbar.setNavigationIcon(R.drawable.leftaero);
+        featuredComicsToolbar.setNavigationOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                FeaturedComicsActivity.this.finish();
+            }
+        });
     }
 
     private void startFetchingData() {
@@ -105,6 +129,11 @@ public class FeaturedComicsActivity extends AppCompatActivity {
                         if(jsonObject.get("totalentries").getAsInt()>comicDataModels.size()) {
                             loadNextDataFromApi();
                         }
+                        else
+                        {
+                            progressbar = (ProgressBar)findViewById(R.id.fetured_comic_progressbar);
+                            progressbar.setVisibility(View.INVISIBLE);
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -114,5 +143,33 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         });
 
         queue.add(stringRequest);
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_featured_comics, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+
+        if(id == R.id.action_search){
+          Toast.makeText(this,"search",Toast.LENGTH_LONG).show();
+        }
+        if(id == R.id.action_settings){
+            Toast.makeText(this,"setting",Toast.LENGTH_LONG).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

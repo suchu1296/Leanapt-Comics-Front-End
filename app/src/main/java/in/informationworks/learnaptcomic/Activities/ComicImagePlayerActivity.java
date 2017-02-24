@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -53,8 +54,12 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
     JsonArray comicImageArray;
     JsonObject jsonObject;
     int order;
-    TextView order_text;
+    TextView overlayComicName;
     ProgressBar progressBar;
+    JsonObject comicObject;
+    TextView currentImageNo,totalImages;
+    ImageButton nextButton,backButton;
+
 
 
     ComicImagePlayerAdapter comicImagePlayerAdapter;
@@ -66,13 +71,23 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_comic_image_player);
-        viewPager=(HackyViewPager)findViewById(R.id.comic_image_player_viewpager);
-        overlay = (RelativeLayout) findViewById(R.id.relative_overlay);
+
        // progressBar = (ProgressBar) findViewById(simpleProgressBar);
+        bindViews();
         readIntent();
         getData(comicID);
         addClickListener();
-        order_text= (TextView) findViewById(R.id.order_text);
+    }
+
+    private void bindViews()
+    {
+        viewPager=(HackyViewPager)findViewById(R.id.comic_image_player_viewpager);
+        overlay = (RelativeLayout) findViewById(R.id.relative_overlay);
+        overlayComicName = (TextView)findViewById(R.id.textView_custom_appbar_title);
+        currentImageNo = (TextView) findViewById(R.id.current_image_no);
+        totalImages = (TextView) findViewById(R.id.total_images);
+        nextButton = (ImageButton) findViewById(R.id.next_button);
+        backButton = (ImageButton) findViewById(R.id.back_button);
     }
 
     private void addClickListener() {
@@ -94,7 +109,7 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         image_resources = new ArrayList<>();
                         jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
-                        JsonObject comicObject = jsonObject.get("comic").getAsJsonObject();
+                        comicObject = jsonObject.get("comic").getAsJsonObject();
                         comicImageArray = comicObject.getAsJsonArray("comic_images");
                         for (int i = 0; i < comicImageArray.size(); i++) {
                             JsonObject image;
@@ -106,6 +121,7 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
                         }
                         comicImagePlayerAdapter= new ComicImagePlayerAdapter(image_resources,getApplicationContext(),ComicImagePlayerActivity.this);
                         viewPager.setAdapter(comicImagePlayerAdapter);
+
 
 
                     }
@@ -122,7 +138,12 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
     {
         if(overlay.getVisibility()!=View.VISIBLE) {
             overlay.setVisibility(View.VISIBLE);
+            String ComicName= comicObject.get("name").getAsString();
+            overlayComicName.setText(ComicName);
             Toast.makeText(getApplicationContext(), "visibility yes", Toast.LENGTH_SHORT).show();
+            int index = comicImagePlayerAdapter.getCount();
+            String indexs = String.valueOf(index);
+            totalImages.setText(indexs);
         }
         else
         {
@@ -133,7 +154,6 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
     }
     public void onGridViewClick(View view)
     {
-
         Intent i = new Intent(this,ComicImagesGridActivity.class);
         i.putExtra("comicID",comicID);
         i.putExtra("jsonObject",jsonObject.toString());
@@ -157,4 +177,69 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "hello world", Toast.LENGTH_SHORT).show();
 
     }*/
+    public  void setCurrentImage()
+    {viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(final int position) {
+            String s = String.valueOf(position+1);
+            currentImageNo.setText(s);
+            if(position+1 == image_resources.size())
+            {
+                nextButton.setVisibility(View.INVISIBLE);
+
+            }
+            else
+            {
+                nextButton.setVisibility(View.VISIBLE);
+            }
+            if(position == 0)
+            {
+                backButton.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                backButton.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    });
+
+    }
+
+    public void onCloseClick(View view)
+    {
+        ComicImagePlayerActivity.this.finish();
+    }
+
+    public void onBackClick(View view)
+    {
+        viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
+    }
+    public  void onNextClick(View view)
+    {
+        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+    }
+    public void setVisiblityOfButton()
+    {
+        if(viewPager.getCurrentItem() == 0)
+        {
+            String s = String.valueOf(viewPager.getCurrentItem() + 1);
+            currentImageNo.setText(s);
+            backButton.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            backButton.setVisibility(View.VISIBLE);
+        }
+
+    }
 }

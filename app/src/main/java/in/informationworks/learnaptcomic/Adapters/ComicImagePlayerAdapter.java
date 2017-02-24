@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -52,6 +53,7 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+        comicImagePlayerActivity.setVisiblityOfButton();
         layoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View item_view=layoutInflater.inflate(R.layout.swip_layout_image_player,container,false);
         photoView = (PhotoView) item_view.findViewById(R.id.comic_image_player_photoview);
@@ -62,10 +64,9 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
             }
         });
         Picasso.with(context).load(image_resources.get(position)).error(R.mipmap.ic_launcher).into(photoView);
+        comicImagePlayerActivity.setCurrentImage();
         container.addView(item_view);
         return item_view;
-
-
     }
 
 
