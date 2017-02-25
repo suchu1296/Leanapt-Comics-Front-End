@@ -57,6 +57,12 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
         layoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View item_view=layoutInflater.inflate(R.layout.swip_layout_image_player,container,false);
         photoView = (PhotoView) item_view.findViewById(R.id.comic_image_player_photoview);
+        item_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                comicImagePlayerActivity.onPhotoViewClick();
+            }
+        });
         photoView.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
             @Override
             public void onViewTap(View view, float x, float y) {

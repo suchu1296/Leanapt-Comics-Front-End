@@ -10,8 +10,9 @@ import java.util.List;
 
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.R;
-import in.informationworks.learnaptcomic.viewholders.ComicCardPreviewListViewHolder;
+import in.informationworks.learnaptcomic.viewholders.ComicCardGridListViewHolder;
 import in.informationworks.learnaptcomic.viewholders.CoverItemListViewHolder;
+import in.informationworks.learnaptcomic.viewholders.SingleComicCardGridItemViewHolder;
 import in.informationworks.learnaptcomic.viewholders.SingleComicCardPreviewItemViewHolder;
 import in.informationworks.learnaptcomic.viewholders.SingleCoverViewHolder;
 import in.informationworks.learnaptcomic.viewholders.ComicCardListViewHolder;
@@ -47,12 +48,15 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }else if(viewType == CommonRecyclerItem.TYPE_SECTION_DATA){
             rootView = inflater.inflate(R.layout.vh_comic_card_list,parent,false);
             return new ComicCardListViewHolder(rootView);
+        }else if(viewType == CommonRecyclerItem.TYPE_SINGLE_GRID_IMAGE) {
+            rootView = inflater.inflate(R.layout.vh_single_comic_grid_card, parent, false);
+            return new SingleComicCardGridItemViewHolder(rootView);
+        }else if(viewType == CommonRecyclerItem.TYPE_GRID_IMAGE_LIST) {
+            rootView = inflater.inflate(R.layout.vh_comic_grid_card_list, parent, false);
+            return new ComicCardGridListViewHolder(rootView);
         }else if(viewType == CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE) {
             rootView = inflater.inflate(R.layout.vh_single_comic_preview_card, parent, false);
             return new SingleComicCardPreviewItemViewHolder(rootView);
-        }else if(viewType == CommonRecyclerItem.TYPE_PREVIEW_IMAGE_LIST) {
-            rootView = inflater.inflate(R.layout.vh_comic_preview_card_list, parent, false);
-            return new ComicCardPreviewListViewHolder(rootView);
         }
         return null;
     }
@@ -72,11 +76,14 @@ public class HomeAdapter extends RecyclerView.Adapter {
             case CommonRecyclerItem.TYPE_SECTION_DATA:
                 ((ComicCardListViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
                 return;
+            case CommonRecyclerItem.TYPE_SINGLE_GRID_IMAGE:
+                ((SingleComicCardGridItemViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
+                return;
+            case CommonRecyclerItem.TYPE_GRID_IMAGE_LIST:
+                ((ComicCardGridListViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
+                return;
             case CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE:
                 ((SingleComicCardPreviewItemViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
-                return;
-            case CommonRecyclerItem.TYPE_PREVIEW_IMAGE_LIST:
-                ((ComicCardPreviewListViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
                 return;
         }
     }

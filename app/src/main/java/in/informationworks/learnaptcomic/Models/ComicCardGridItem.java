@@ -4,10 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Riya on 25-Feb-17.
+ * Created by Riya on 15-Feb-17.
  */
 
-public class ComicCardPreviewItem {
+public class ComicCardGridItem {
     public static final String EXTRA_ORDER = "extraOrder";
     public static final String EXTRA_ID = "extraID";
     @SerializedName("compressed_image_url")

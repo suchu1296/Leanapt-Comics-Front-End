@@ -1,19 +1,14 @@
 package in.informationworks.learnaptcomic.Activities;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,20 +23,12 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import in.informationworks.learnaptcomic.Adapters.ComicImagePlayerAdapter;
-import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
-import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.Views.HackyViewPager;
-
-import static android.R.attr.id;
-import static android.R.attr.visible;
 //import static in.informationworks.learnaptcomic.R.id.simpleProgressBar;
 
 public class ComicImagePlayerActivity extends AppCompatActivity {
@@ -59,13 +46,11 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
     JsonObject comicObject;
     TextView currentImageNo,totalImages;
     ImageButton nextButton,backButton;
-
-
-
     ComicImagePlayerAdapter comicImagePlayerAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -76,7 +61,6 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
         bindViews();
         readIntent();
         getData(comicID);
-        addClickListener();
     }
 
     private void bindViews()
@@ -90,9 +74,6 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
         backButton = (ImageButton) findViewById(R.id.back_button);
     }
 
-    private void addClickListener() {
-
-    }
 
     private void readIntent()
     {
@@ -115,7 +96,6 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
                             JsonObject image;
                             image = comicImageArray.get(i).getAsJsonObject();
                             originalImageUrl=image.get("original_image_url").getAsString();
-                            //Toast.makeText(getApplicationContext(),originalImageUrl,Toast.LENGTH_LONG).show();
                             image_resources.add(originalImageUrl);
 
                         }
@@ -134,6 +114,7 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
 
         queue.add(stringRequest);
     }
+
     public void onPhotoViewClick()
     {
         if(overlay.getVisibility()!=View.VISIBLE) {
@@ -171,13 +152,7 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
         }
     }
 
-   /* public void startClick(View view)
-    {
-        progressBar.setVisibility(View.VISIBLE);
-        Toast.makeText(getApplicationContext(), "hello world", Toast.LENGTH_SHORT).show();
-
-    }*/
-    public  void setCurrentImage()
+    public void setCurrentImage()
     {viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -239,6 +214,6 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
         {
             backButton.setVisibility(View.VISIBLE);
         }
-
     }
+
 }

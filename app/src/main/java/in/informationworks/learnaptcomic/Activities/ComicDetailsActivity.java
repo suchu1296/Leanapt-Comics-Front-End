@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -30,8 +29,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +36,6 @@ import java.util.List;
 import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
 import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
-import in.informationworks.learnaptcomic.Models.CoverItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 
@@ -149,10 +145,6 @@ public class ComicDetailsActivity extends AppCompatActivity {
                         setDataInRecyclerView();
                         commicDetailsContent.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.INVISIBLE);
-
-
-
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -179,8 +171,8 @@ public class ComicDetailsActivity extends AppCompatActivity {
 
     private void setDataInRecyclerView()
     {
-        for (ComicCardPreviewItem comicCardPreviewItem : receivedComicImages) {
-            recyclerItems.add(new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE,comicCardPreviewItem));
+        for (ComicCardPreviewItem ComicCardPreviewItem : receivedComicImages.subList(0,3)) {
+            recyclerItems.add(new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE,ComicCardPreviewItem));
         }
 
     }

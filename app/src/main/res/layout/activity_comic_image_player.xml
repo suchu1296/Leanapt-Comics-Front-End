@@ -4,7 +4,7 @@
     android:id="@+id/activity_comic_image_player"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   android:background="@color/colorBlack"
+    android:background="@color/colorBlack"
     tools:context="in.informationworks.learnaptcomic.Activities.ComicImagePlayerActivity">
 
 
@@ -121,7 +121,7 @@
                     android:src="@drawable/back"
                     android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
-                    android:background="@color/colorBlack"
+                    android:background="#99000000"
                     android:onClick="onBackClick"
 
                     />
@@ -131,7 +131,7 @@
                     android:src="@drawable/forward"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
-                    android:background="@color/colorBlack"
+                    android:background="#99000000"
                     android:onClick="onNextClick"
                     />
 

@@ -7,7 +7,7 @@ import java.util.List;
  */
 
 public class CommonRecyclerItem {
-    final public static int TYPE_COVER_LIST=1,TYPE_SECTION_DATA = 2, TYPE_SINGLE_COVER=3, TYPE_SINGLE_ITEM=4,TYPE_SINGLE_PREVIEW_IMAGE=5,TYPE_PREVIEW_IMAGE_LIST=6;
+    final public static int TYPE_COVER_LIST=1,TYPE_SECTION_DATA = 2, TYPE_SINGLE_COVER=3, TYPE_SINGLE_ITEM=4,TYPE_SINGLE_GRID_IMAGE=5,TYPE_GRID_IMAGE_LIST=6,TYPE_SINGLE_PREVIEW_IMAGE=7;
     int itemType;
     Object item;
     List<Object> options;
