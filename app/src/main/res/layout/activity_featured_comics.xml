@@ -24,16 +24,26 @@
         android:paddingTop="5dp"
         android:layout_below="@id/featured_comics_toolbar">
 
-        <ProgressBar
-            android:id="@+id/fetured_comic_progressbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:indeterminateTint="#000000"
-            android:layout_centerInParent="true"
-            android:layout_below="@+id/recyclerview_featured_comics"/>
 
-       <android.support.v7.widget.RecyclerView
+        <fr.castorflex.android.circularprogressbar.CircularProgressBar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="50dp"
+            android:id="@+id/fetured_comic_progressbar"
+            android:layout_height="50dp"
+            android:indeterminate="true"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/recyclerview_featured_comics"
+            app:cpb_color="@color/colorRed"
+            app:cpb_colors="@color/colorRed"
+            app:cpb_rotation_speed="1.0"
+            app:cpb_sweep_speed="1.0"
+            app:cpb_stroke_width="4dp"
+            app:cpb_min_sweep_angle="10"
+            app:cpb_max_sweep_angle="300"
+            />
+
+        <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_featured_comics"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -5,6 +5,7 @@
     android:id="@+id/activity_comic_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/blurr"
     tools:context="in.informationworks.learnaptcomic.Activities.ComicDetailsActivity">
 
     <android.support.v7.widget.Toolbar
@@ -12,18 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        />
+        android:elevation="4dp" />
+
     <ProgressBar
         android:id="@+id/comic_details_progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:indeterminateTint="#FF0000"
-        android:layout_centerInParent="true"
-        />
-
-
+        android:layout_centerInParent="true" />
 
     <RelativeLayout
         android:id="@+id/all_content"
@@ -45,89 +43,123 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:scaleType="fitXY"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageView4"
         android:orientation="vertical"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:paddingLeft="10dp">
 
         <TextView
-            android:text="Name:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/nameLable" />
-
-        <TextView
+            android:id="@+id/comicName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/comicName"
-            android:id="@+id/comicName"
+            android:textSize="20dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorBlack"
             android:layout_weight="0.16" />
 
-        <TextView
-            android:text="Size:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView17"
-            android:layout_alignRight="@+id/textView17"
-            android:layout_alignEnd="@+id/textView17"
-            android:layout_marginTop="17dp"
-            android:id="@+id/sizeLabel" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView18"
-            android:id="@+id/comicSize" />
-
-        <TextView
-            android:text="Pages:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView19"
-            android:layout_alignLeft="@+id/textView19"
-            android:layout_alignStart="@+id/textView19"
-            android:layout_marginTop="11dp"
-            android:id="@+id/pagesLabel" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView21"
-            android:id="@+id/comicPages" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/readNowButton"
             android:onClick="onReadNow"
-            android:text="Read Now"/>
+            android:layout_marginBottom="5dp"
+            android:text="Read Now"
+            android:background="#1Affffff"
+            android:textColor="#000000"
+            android:alpha="1"
+           />
 
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/downloadButton"
+            android:onClick="onDownload"
+            android:layout_marginBottom="5dp"
+            android:background="#1Affffff"
+            android:text="Download"/>
 
     </LinearLayout>
     </RelativeLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/preview_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relative2"
-        android:layout_marginTop="10dp"
-        />
-    <TextView
-        android:text="Description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/preview_recycler_view"
-        android:id="@+id/descriptionLabel" />
-    <TextView
-        android:text="TextDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/preview_recycler_view"
-        android:id="@+id/description" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relative2"
+            android:paddingLeft="5dp">
+        <TextView
+            android:text="Size:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sizeLabel"
+            android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/sizeLabel"
+                android:id="@+id/comicSize"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:text="Pages:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sizeLabel"
+                android:id="@+id/pagesLabel"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/comicSize"
+                android:layout_toRightOf="@+id/pagesLabel"
+                android:id="@+id/comicPages"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/summary_label"
+                android:text="Summary:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pagesLabel"
+                android:textSize="20dp"
+                android:textColor="@color/colorBlack"
+                android:layout_weight="0.16"/>
+
+            <TextView
+                android:id="@+id/comic_summary"
+                android:text="Description:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/summary_label"
+                android:textSize="16dp"
+                android:textColor="@color/colorBlack"
+                android:layout_weight="0.16"/>
+
+            <TextView
+                android:id="@+id/preview_label"
+                android:text="Preview:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/comic_summary"
+                android:textSize="20dp"
+                android:textColor="@color/colorBlack"
+                android:layout_weight="0.16"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/preview_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/preview_label" />
+
+                </RelativeLayout>
 
     </RelativeLayout>
 </RelativeLayout>

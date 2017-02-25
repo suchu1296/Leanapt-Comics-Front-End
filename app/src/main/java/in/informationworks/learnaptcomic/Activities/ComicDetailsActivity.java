@@ -45,7 +45,7 @@ import in.informationworks.learnaptcomic.R;
 
 public class ComicDetailsActivity extends AppCompatActivity {
     int temp;
-    String comicname,comicImageURL,comicpages,s,comicsize;
+    String comicname,comicImageURL,comicpages,s,comicsize,comicsummary;
     Intent intent;
     int comicID;
     ImageView imageView4;
@@ -55,6 +55,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
     TextView comicSize;
     TextView pagesLabel;
     TextView comicPages;
+    TextView comicSummary;
     Button readNowButton;
     android.support.v7.widget.RecyclerView previewRecyclerView;
     Context context;
@@ -98,7 +99,6 @@ public class ComicDetailsActivity extends AppCompatActivity {
     private void bindViews(){
         previewRecyclerView = (android.support.v7.widget.RecyclerView) findViewById(R.id.preview_recycler_view);
         imageView4 = (ImageView) findViewById(R.id.imageView4);
-        nameLable = (TextView) findViewById(R.id.nameLable);
         comicName = (TextView) findViewById(R.id.comicName);
         sizeLabel = (TextView) findViewById(R.id.sizeLabel);
         comicSize = (TextView) findViewById(R.id.comicSize);
@@ -108,6 +108,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         commicDetailsContent = (RelativeLayout) findViewById(R.id.all_content);
         progressBar = (ProgressBar) findViewById(R.id.comic_details_progressbar);
         comicDetailsToolbar = (Toolbar) findViewById(R.id.comic_details_toolbar);
+        comicSummary = (TextView) findViewById(R.id.comic_summary);
     }
 
     private void readIntent()
@@ -134,12 +135,14 @@ public class ComicDetailsActivity extends AppCompatActivity {
                         comicname=comicObject.get("name").getAsString();
                         comicpages=comicObject.get("pages_count").getAsString();
                         comicsize=comicObject.get("size").getAsString();
+                        comicsummary=comicObject.get("short_description").getAsString();
                         JsonObject coverImageObject = comicObject.get("cover_image").getAsJsonObject();
                         comicImageURL = coverImageObject.get("compressed_image_url").getAsString();
                         Picasso.with(getApplicationContext()).load(comicImageURL).error(R.drawable.ic_menu_manage).into(imageView4);
                         comicName.setText(comicname);
                         comicPages.setText(comicpages);
                         comicSize.setText(comicsize);
+                        comicSummary.setText(comicsummary);
                         comicImagePreviewArray = comicObject.getAsJsonArray("comic_images");
                         Type listType = new TypeToken<ArrayList<ComicCardPreviewItem>>(){}.getType();
                         receivedComicImages = new Gson().fromJson(comicImagePreviewArray,listType);

@@ -33,5 +33,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.commit451:PhotoView:1.2.4'
     compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.github.castorflex.smoothprogressbar:library-circular:1.0.1'
     testCompile 'junit:junit:4.12'
 }
