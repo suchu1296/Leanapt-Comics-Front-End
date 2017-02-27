@@ -1,6 +1,8 @@
 package in.informationworks.learnaptcomic.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -27,14 +30,18 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 
 public class ComicImagePlayerAdapter extends PagerAdapter {
-    private ArrayList<String> image_resources;//={R.drawable.a1,R.drawable.a2,R.drawable.a3,R.drawable.a4};
+    private ArrayList<String> image_resources,thumbImageResources;//={R.drawable.a1,R.drawable.a2,R.drawable.a3,R.drawable.a4};
     private Context context;
+    ProgressBar progressBar;
     private LayoutInflater layoutInflater;
     public PhotoView photoView;
+    ImageView thumbImageView;
     ComicImagePlayerActivity comicImagePlayerActivity;
 
-    public ComicImagePlayerAdapter(ArrayList<String> image_resources, Context context, ComicImagePlayerActivity comicImagePlayerActivity) {
+
+    public ComicImagePlayerAdapter(ArrayList<String> image_resources,ArrayList<String> thumbImageResources, Context context, ComicImagePlayerActivity comicImagePlayerActivity) {
         this.image_resources = image_resources;
+        this.thumbImageResources = thumbImageResources;
         this.context = context;
         this.comicImagePlayerActivity = comicImagePlayerActivity;
     }
@@ -44,6 +51,7 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
     public int getCount()
     {
         return image_resources.size();
+
     }
 
     @Override
@@ -57,6 +65,9 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
         layoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View item_view=layoutInflater.inflate(R.layout.swip_layout_image_player,container,false);
         photoView = (PhotoView) item_view.findViewById(R.id.comic_image_player_photoview);
+        thumbImageView = (ImageView)item_view.findViewById(R.id.comic_image_player_thumb_photoview);
+        progressBar = (ProgressBar)item_view.findViewById(R.id.player_progress);
+
         item_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +80,27 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
                 comicImagePlayerActivity.onPhotoViewClick();
             }
         });
-        Picasso.with(context).load(image_resources.get(position)).error(R.mipmap.ic_launcher).into(photoView);
+
+        thumbImageView.setVisibility(View.VISIBLE);
+        Picasso.with(context).load(image_resources.get(position)).error(R.mipmap.ic_launcher).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                photoView.setImageBitmap(bitmap);
+                thumbImageView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE );
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+        Picasso.with(context).load(thumbImageResources.get(position)).error(R.mipmap.ic_launcher).into(thumbImageView);
         comicImagePlayerActivity.setCurrentImage();
         container.addView(item_view);
         return item_view;

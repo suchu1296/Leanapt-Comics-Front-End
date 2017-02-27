@@ -20,18 +20,9 @@ import in.informationworks.learnaptcomic.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private ImageView comic_card_image1;
 
     ArrayList<CommonRecyclerItem> recyclerItems;
     HomeAdapter homeAdapter;
-    public int[] images = {
-            // step1,
-            //R.drawable.step2,
-            //R.drawable.step3,
-            //R.drawable.step4,
-            //R.drawable.step5
-    };
 
 
     @Override
@@ -39,32 +30,12 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //toolbar = (Toolbar) findViewById(R.id.toolbar);
-       /* allSampleData = new ArrayList<SectionDataModel>();
-        allData= new ArrayList<SingleCoverMain>();
-*/
-        /*if (toolbar != null)
-        {
-            setSupportActionBar(toolbar);
-            toolbar.setTitle("Comics");
-
-        }*/
         recyclerItems = new ArrayList<>();
-        //getSupportActionBar().setTitle("Comics");
         createCoverData();
-        //createSectionData();
         RecyclerView recyclerview_comic_card_list = (RecyclerView) findViewById(R.id.main_recycler_view);
         homeAdapter = new HomeAdapter(this,recyclerItems);
-        /*CoverRecyclerviewAdapter coverRecyclerviewAdapter = new CoverRecyclerviewAdapter(this, allData);*/
         recyclerview_comic_card_list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerview_comic_card_list.setAdapter(homeAdapter);
-
-        /*createTemporaryData();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        RecyclerViewDataAdapter recyclerViewDataAdapter = new RecyclerViewDataAdapter(this,allSampleData);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(recyclerViewDataAdapter);*/
 
 
     }

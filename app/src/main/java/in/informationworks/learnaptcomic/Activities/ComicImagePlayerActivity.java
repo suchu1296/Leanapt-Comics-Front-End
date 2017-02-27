@@ -35,8 +35,9 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
     private static final int INDEX_OF_PAGE_TO_SCROLL = 111;
     ViewPager viewPager;
     int comicID;
-    String originalImageUrl;
+    String originalImageUrl,thumbImageUrl;
     public ArrayList<String> image_resources;
+    public ArrayList<String> thumbImageResources;
     public RelativeLayout overlay;
     JsonArray comicImageArray;
     JsonObject jsonObject;
@@ -89,6 +90,7 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         image_resources = new ArrayList<>();
+                        thumbImageResources = new ArrayList<>();
                         jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
                         comicObject = jsonObject.get("comic").getAsJsonObject();
                         comicImageArray = comicObject.getAsJsonArray("comic_images");
@@ -97,9 +99,11 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
                             image = comicImageArray.get(i).getAsJsonObject();
                             originalImageUrl=image.get("original_image_url").getAsString();
                             image_resources.add(originalImageUrl);
-
+                            thumbImageUrl=image.get("thumb_image_url").getAsString();
+                           // Toast.makeText(getApplicationContext(),thumbImageUrl,Toast.LENGTH_LONG).show();
+                            thumbImageResources.add(thumbImageUrl);
                         }
-                        comicImagePlayerAdapter= new ComicImagePlayerAdapter(image_resources,getApplicationContext(),ComicImagePlayerActivity.this);
+                        comicImagePlayerAdapter= new ComicImagePlayerAdapter(image_resources,thumbImageResources,getApplicationContext(),ComicImagePlayerActivity.this);
                         viewPager.setAdapter(comicImagePlayerAdapter);
 
 

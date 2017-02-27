@@ -4,11 +4,23 @@
     android:layout_height="match_parent"
     android:background="@color/colorBlack"
     >
-<ProgressBar
+
+    <ImageView
+        android:id="@+id/comic_image_player_thumb_photoview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/a2"
+
+        />
+  <ProgressBar
+      android:id="@+id/player_progress"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:indeterminateTint="#ffffff"/>
+
+
+
     <uk.co.senab.photoview.PhotoView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/comic_image_player_photoview"
         android:layout_width="match_parent"
