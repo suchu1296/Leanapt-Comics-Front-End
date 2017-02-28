@@ -31,7 +31,7 @@ public class ComicCardListViewHolder extends RecyclerView.ViewHolder {
 
 
     public void bindCRItem(Context context, CommonRecyclerItem commonRecyclerItem){
-        singleItemModels = (List<SingleItemModel>)commonRecyclerItem.getItem();
+        singleItemModels = (List<SingleItemModel>) commonRecyclerItem.getItem();
         recyclerview_comic_card_list.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
         prepareRecyclerItems();
         homeAdapter = new HomeAdapter(context,recyclerItems);

@@ -8,36 +8,93 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
+import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.CoverItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 
+import static in.informationworks.learnaptcomic.R.id.recyclerview_comic_card_list;
+
 public class HomeActivity extends AppCompatActivity {
+
 
 
     ArrayList<CommonRecyclerItem> recyclerItems;
     HomeAdapter homeAdapter;
+    List<SingleItemModel> receivedComicsData;
+    RecyclerView recyclerview_comic_card_list;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         recyclerItems = new ArrayList<>();
+        bindViews();
+        loadDataForFeatured();
         createCoverData();
-        RecyclerView recyclerview_comic_card_list = (RecyclerView) findViewById(R.id.main_recycler_view);
+        prepareRecyclerView();
+    }
+
+    protected void bindViews()
+    {
+        recyclerview_comic_card_list = (RecyclerView) findViewById(R.id.main_recycler_view);
+    }
+
+    protected void prepareRecyclerView()
+    {
         homeAdapter = new HomeAdapter(this,recyclerItems);
         recyclerview_comic_card_list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerview_comic_card_list.setAdapter(homeAdapter);
 
+    }
 
+    public void loadDataForFeatured()
+    {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://192.168.2.30:3000/api/mobile/v1/home/featured-comics.json";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        JsonObject jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
+                        JsonArray jComicsArray = jsonObject.getAsJsonArray("comics");
+                        Type listType = new TypeToken<ArrayList<SingleItemModel>>(){}.getType();
+                        receivedComicsData = new Gson().fromJson(jComicsArray,listType);
+                        CommonRecyclerItem cri1=new CommonRecyclerItem(CommonRecyclerItem.TYPE_SECTION_DATA,receivedComicsData);
+                        recyclerItems.add(cri1);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //  mTextView.setText("That didn't work!");
+            }
+        });
+
+        queue.add(stringRequest);
     }
 
     private void createCoverData() {
@@ -45,38 +102,11 @@ public class HomeActivity extends AppCompatActivity {
         for (int i = 0; i < 5; i++) {
             coverItems.add(new CoverItem());
         }
-        List singleitems=new ArrayList();
-        for (int i = 0; i < 7; i++) {
-            singleitems.add(new SingleItemModel());
-        }
+
         CommonRecyclerItem cri=new CommonRecyclerItem(CommonRecyclerItem.TYPE_COVER_LIST,coverItems);
-        CommonRecyclerItem cri1=new CommonRecyclerItem(CommonRecyclerItem.TYPE_SECTION_DATA,singleitems);
-        CommonRecyclerItem cri2=new CommonRecyclerItem(CommonRecyclerItem.TYPE_SECTION_DATA,singleitems);
-
-
         recyclerItems.add(cri);
-        recyclerItems.add(cri1);
-        recyclerItems.add(cri2);
     }
 
-    /* public void createTemporaryData()
-       {
-           for(int i=1;i<=2;i++)
-           {
-               SectionDataModel sectionDataModel = new SectionDataModel();
-               sectionDataModel.setHeaderTitle("List:"+i);
-               ArrayList<SingleItemModel>  singleItem = new ArrayList<SingleItemModel>();
-               for (int j = 0; j < 5; j++) {
-                   singleItem.add(new SingleItemModel("Hii " + j , "Url " + j));
-                  // int id = getResources().getIdentifier("LearnaptComic:drawable/" + step1, null, null);
-                  // comic_card_image1=(ImageView) findViewById(R.id.comic_card_image);
-                  // comic_card_image1.setBackground(getResources().getDrawable(R.drawable.step1));
-               }
-
-               sectionDataModel.setAllItemsInSection(singleItem);
-               allSampleData.add(sectionDataModel);
-           }
-       }*/
     public void On_SeeAll_Button_Click(View view)
     {
         Intent featuredComicsIntent = new Intent(this,FeaturedComicsActivity.class);

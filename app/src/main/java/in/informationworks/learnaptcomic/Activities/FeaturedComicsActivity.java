@@ -39,6 +39,8 @@ import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 
+import static android.provider.ContactsContract.QuickContact.EXTRA_MODE;
+
 public class FeaturedComicsActivity extends AppCompatActivity {
     HomeAdapter homeAdapter;
     ArrayList<CommonRecyclerItem> recyclerItems;
@@ -63,6 +65,7 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_featured_comics);
         bindViews();
+        readintent();
         setFeaturedComicsToolbar();
         prepareRecyclerView();
         startFetchingData();
@@ -73,6 +76,15 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         recyclerviewFeaturedComics = (android.support.v7.widget.RecyclerView) findViewById(R.id.recyclerview_featured_comics);
         featuredComicsToolbar = (Toolbar) findViewById(R.id.featured_comics_toolbar);
     }
+
+    public void readintent()
+    {
+        Intent i = getIntent();
+        int mode=i.getIntExtra("EXTRA_MODE",-1);
+        String mode1 = String.valueOf(mode);
+        Toast.makeText(getApplicationContext(),mode1,Toast.LENGTH_LONG).show();
+    }
+
 
     private void setFeaturedComicsToolbar()
     {
