@@ -40,13 +40,15 @@ import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 
 import static android.provider.ContactsContract.QuickContact.EXTRA_MODE;
+import static in.informationworks.learnaptcomic.Models.SingleItemModel.COMIC_TYPE_FEATURED;
 
 public class FeaturedComicsActivity extends AppCompatActivity {
     HomeAdapter homeAdapter;
     ArrayList<CommonRecyclerItem> recyclerItems;
     List<SingleItemModel> comicDataModels;
     Context context;
-    int loadedPages=0;
+    int loadedPages=0, mode;
+    String mode1,selectedType;
     Toolbar featuredComicsToolbar;
     ProgressBar progressbar;
     /** Android Views **/
@@ -65,8 +67,9 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_featured_comics);
         bindViews();
-        readintent();
         setFeaturedComicsToolbar();
+        readintent();
+        selectType();
         prepareRecyclerView();
         startFetchingData();
     }
@@ -80,9 +83,25 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     public void readintent()
     {
         Intent i = getIntent();
-        int mode=i.getIntExtra("EXTRA_MODE",-1);
-        String mode1 = String.valueOf(mode);
+        mode=i.getIntExtra("EXTRA_MODE",-1);
+        mode1 = String.valueOf(mode);
         Toast.makeText(getApplicationContext(),mode1,Toast.LENGTH_LONG).show();
+    }
+
+    public void selectType()
+    {
+        switch (mode) {
+            case 1:
+                selectedType = "featured-comics";
+                featuredComicsToolbar.setTitle("Featured Comics");
+                break;
+            case 2:
+                selectedType = "popular-comics";
+                featuredComicsToolbar.setTitle("Popular Comics");
+                break;
+        }
+
+
     }
 
 
@@ -90,7 +109,6 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     {
         setSupportActionBar(featuredComicsToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        featuredComicsToolbar.setTitle("FeaturedComics");
         featuredComicsToolbar.setTitleTextColor(0xFFFFFFFF);
         featuredComicsToolbar.setNavigationIcon(R.drawable.leftaero);
         featuredComicsToolbar.setNavigationOnClickListener( new View.OnClickListener() {
@@ -127,7 +145,7 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     public void loadNextDataFromApi()
     {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.2.30:3000/api/mobile/v1/home/featured-comics.json?page="+(loadedPages+1);
+        String url ="http://192.168.2.30:3000/api/mobile/v1/home/"+selectedType+".json?page="+(loadedPages+1);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

@@ -44,16 +44,16 @@ public class HomeActivity extends AppCompatActivity {
     HomeAdapter homeAdapter;
     List<SingleItemModel> receivedComicsData;
     RecyclerView recyclerview_comic_card_list;
-
-
+    String[] typeOfComics  ={SingleItemModel.COMIC_TYPE_FEATURED,
+            SingleItemModel.COMIC_TYPE_POPULAR};
+    ProgressBar progressbar;
+    boolean featuredLoaded=false, popularLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        recyclerItems = new ArrayList<>();
         bindViews();
-        loadDataForFeatured();
         createCoverData();
         prepareRecyclerView();
     }
@@ -61,6 +61,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void bindViews()
     {
         recyclerview_comic_card_list = (RecyclerView) findViewById(R.id.main_recycler_view);
+      //  progressbar = (ProgressBar)findViewById(R.id.home_progressbar);
     }
 
     protected void prepareRecyclerView()
@@ -68,36 +69,57 @@ public class HomeActivity extends AppCompatActivity {
         homeAdapter = new HomeAdapter(this,recyclerItems);
         recyclerview_comic_card_list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerview_comic_card_list.setAdapter(homeAdapter);
-
+        popularLoaded=false;
+        featuredLoaded=false;
+        loadNextCard();
     }
 
-    public void loadDataForFeatured()
-    {
+    public void loadNextCard(){
+        if(!featuredLoaded) {
+            loadComicsForType(SingleItemModel.COMIC_TYPE_FEATURED);
+        }else if(!popularLoaded){
+            loadComicsForType(SingleItemModel.COMIC_TYPE_POPULAR);
+        }
+    }
+
+    private void loadComicsForType(final String comicType) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.2.30:3000/api/mobile/v1/home/featured-comics.json";
+        String url = "http://192.168.2.30:3000/api/mobile/v1/home/"+comicType+".json";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         JsonObject jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
                         JsonArray jComicsArray = jsonObject.getAsJsonArray("comics");
-                        Type listType = new TypeToken<ArrayList<SingleItemModel>>(){}.getType();
-                        receivedComicsData = new Gson().fromJson(jComicsArray,listType);
-                        CommonRecyclerItem cri1=new CommonRecyclerItem(CommonRecyclerItem.TYPE_SECTION_DATA,receivedComicsData);
+                        Type listType = new TypeToken<ArrayList<SingleItemModel>>() {
+                        }.getType();
+                        receivedComicsData = new Gson().fromJson(jComicsArray, listType);
+                        Toast.makeText(getApplicationContext(),comicType,Toast.LENGTH_SHORT).show();
+                        CommonRecyclerItem cri1 = new CommonRecyclerItem(CommonRecyclerItem.TYPE_SECTION_DATA, receivedComicsData);
+                        List<Object> options=new ArrayList<>();
+                        options.add(comicType);
+                        cri1.setOptions(options);
                         recyclerItems.add(cri1);
+                        homeAdapter.notifyItemInserted(recyclerItems.size());
+                        if(comicType.equals(SingleItemModel.COMIC_TYPE_FEATURED)){
+                            featuredLoaded = true;
+                        }else if (comicType.equals(SingleItemModel.COMIC_TYPE_POPULAR)){
+                            popularLoaded = true;
+                        }
+                        loadNextCard();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //  mTextView.setText("That didn't work!");
+                Toast.makeText(HomeActivity.this, "That failed"+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
         queue.add(stringRequest);
     }
 
     private void createCoverData() {
+        recyclerItems = new ArrayList<>();
         List coverItems = new ArrayList();
         for (int i = 0; i < 5; i++) {
             coverItems.add(new CoverItem());
@@ -105,12 +127,6 @@ public class HomeActivity extends AppCompatActivity {
 
         CommonRecyclerItem cri=new CommonRecyclerItem(CommonRecyclerItem.TYPE_COVER_LIST,coverItems);
         recyclerItems.add(cri);
-    }
-
-    public void On_SeeAll_Button_Click(View view)
-    {
-        Intent featuredComicsIntent = new Intent(this,FeaturedComicsActivity.class);
-        startActivity(featuredComicsIntent);
     }
 
 

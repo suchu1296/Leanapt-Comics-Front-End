@@ -15,6 +15,9 @@ import in.informationworks.learnaptcomic.R;
 
 public class SingleItemModel {
 
+    public static final String COMIC_TYPE_FEATURED="featured-comics";
+    public static final String COMIC_TYPE_POPULAR="popular-comics";
+
     public static final String EXTRA_ID = "extraID";
     public static final String EXTRA_IMAGE_URL = "extraImageURL";
     public static final String EXTRA_NAME = "extraName";

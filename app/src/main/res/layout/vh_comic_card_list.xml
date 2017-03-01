@@ -26,8 +26,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_alignRight="@+id/catagory_label"
-        android:text="See All"
-        android:onClick="On_SeeAll_Button_Click"/>
+        android:text="See All"/>
 
 </RelativeLayout>
 

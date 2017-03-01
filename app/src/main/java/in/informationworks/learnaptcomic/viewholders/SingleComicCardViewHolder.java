@@ -25,6 +25,7 @@ public class SingleComicCardViewHolder extends RecyclerView.ViewHolder {
     TextView comic_card_text;
     String id;
 
+
     public SingleComicCardViewHolder(View itemView) {
         super(itemView);
 
