@@ -125,6 +125,14 @@
             android:layout_marginBottom="5dp"
             android:background="#1Affffff"
             android:text="Download"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signUp"
+            android:onClick="onSignUp"
+            android:layout_marginBottom="5dp"
+            android:background="#1Affffff"
+            android:text="Sign Up"/>
 
     </LinearLayout>
     </RelativeLayout>

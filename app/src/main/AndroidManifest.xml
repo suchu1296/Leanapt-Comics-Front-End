@@ -18,16 +18,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ComicActivity" />
-        <activity android:name=".Activities.FeaturedComicsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Activities.FeaturedComicsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.ComicImagePlayerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.ComicDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".Activities.ComicImagesGridActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activities.ComicDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.ComicImagesGridActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.RegistrationActivity"></activity>
     </application>
 
 </manifest>

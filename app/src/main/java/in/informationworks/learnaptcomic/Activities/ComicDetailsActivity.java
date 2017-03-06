@@ -163,6 +163,12 @@ public class ComicDetailsActivity extends AppCompatActivity {
         startActivity(comicDetailsIntent);
     }
 
+    public void onSignUp(View view)
+    {
+        Intent signUp = new Intent(this,RegistrationActivity.class);
+        startActivity(signUp);
+    }
+
     private void startFetchingData()
     {
         homeAdapter = new HomeAdapter(this,recyclerItems);

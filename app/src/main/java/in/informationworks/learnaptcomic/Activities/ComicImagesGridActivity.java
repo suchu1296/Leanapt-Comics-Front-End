@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -70,9 +71,7 @@ public class ComicImagesGridActivity extends AppCompatActivity {
         comicID=comicImagePlayer.getIntExtra("comicID",-1);
         StringjsonObject = (comicImagePlayer.getStringExtra("jsonObject"));
         Toast.makeText(this, "comic id:"+comicID, Toast.LENGTH_SHORT).show();
-        Gson gson = new Gson();
-        JsonElement element = gson.fromJson(StringjsonObject,JsonElement.class);
-        jsonObject = element.getAsJsonObject();
+        jsonObject = (new JsonParser()).parse(StringjsonObject).getAsJsonObject();
     }
 
     private  void getDataFromJson()
