@@ -11,6 +11,11 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="left_aero">Back</string>
     <string name="search">search</string>
+    <string name="emailerror">Enter a valid email..</string>
+    <string name="blankerror">Required..</string>
+    <string name="passworderror">Enter a valid password..</string>
+    <string name="confirmPassworderror">Password do not match..</string>
+    <string name="mobileNoerror">Mobile no invalid..</string>
 
 
 </resources>

@@ -3,6 +3,7 @@ package in.informationworks.learnaptcomic.Activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+import com.google.common.collect.Range;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -29,14 +34,15 @@ import java.util.Map;
 import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
 import in.informationworks.learnaptcomic.R;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity
+{
 
     RelativeLayout activityRegistration;
-    EditText email;
-    EditText password;
+    EditText email,name,password,confirmPassword,mobileNo;
     Button button2;
-    String userEmail,userPassword;
+    String userName,userEmail,userPassword,userConfirmPassword,userMobileNo;
     JsonObject user;
+    AwesomeValidation awesomeValidation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,27 +54,110 @@ public class RegistrationActivity extends AppCompatActivity {
     private void bindViews()
     {
         activityRegistration = (RelativeLayout) findViewById(R.id.activity_registration);
+        name = (EditText) findViewById(R.id.name);
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
+        confirmPassword = (EditText) findViewById(R.id.confirm_password);
+        mobileNo = (EditText) findViewById(R.id.mobile_no);
         button2 = (Button) findViewById(R.id.button2);
+    }
+
+    public boolean validation()
+    {
+        userName = name.getText().toString();
+        userEmail=email.getText().toString();
+        userPassword=password.getText().toString();
+        userConfirmPassword=confirmPassword.getText().toString();
+        userMobileNo=mobileNo.getText().toString();
+
+        boolean isAllOK = true;
+        boolean isTemp = true;
+        //First name can not be blank
+        if (userName.length() == 0)
+        {
+            isAllOK = false;
+            name.setError(getString(R.string.blankerror));
+        }
+
+
+        //email
+        if (userEmail.length() > 0)
+        {
+            String emailPattern = "[a-zA-z0-9.-_]+@[a-z]+\\.+[a-z]+";
+            if(userEmail.matches(emailPattern)) {
+                isTemp=true;
+            } else
+            {
+                email.setError(getString(R.string.emailerror));
+                isAllOK = false;
+            }
+        }
+        else
+        {
+            isAllOK = false;
+            email.setError(getString(R.string.blankerror));
+        }
+
+        //password
+        if(userPassword.length()>0)
+        {
+            if (userPassword.length() >= 6 && userPassword.length() <= 20) {
+                isTemp = true;
+            } else {
+                isAllOK = false;
+                password.setError("Password length must be between 6 to 20");
+            }
+        }
+         else
+        {
+            password.setError(getString(R.string.blankerror));
+        }
+
+        //confirm password
+        if(userPassword.equals(userConfirmPassword) )
+        {
+            isTemp=true;
+        }
+        else
+        {
+            isAllOK=false;
+            confirmPassword.setError(getString(R.string.confirmPassworderror));
+        }
+
+        if (userMobileNo.length() > 0)
+        {
+            String mobilePattern = "[1-9]{1}[0-9]{9}";
+            if(userMobileNo.matches(mobilePattern))
+            {
+                isTemp=true;
+            }
+            else
+            {
+                mobileNo.setError(getString(R.string.mobileNoerror));
+                isAllOK = false;
+            }
+        }
+        else
+        {
+            isAllOK = false;
+            mobileNo.setError(getString(R.string.blankerror));
+        }
+        return isAllOK;
     }
 
 
 
     public void onRegisterClick(View view)
     {
-        userEmail=email.getText().toString();
-        userPassword=password.getText().toString();
-        String emailPattern = "[a-zA-z0-9.-_]+@[a-z]+\\.+[a-z]+";
-        if(userEmail.matches(emailPattern)) {
+        if(validation())
+        {
+            Toast.makeText(this, "Validation Successfull", Toast.LENGTH_LONG).show();
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = "http://192.168.2.30:3000/api/mobile/v1/users/registration";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            //  Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
-                            // Toast.makeText(RegistrationActivity.this,response, Toast.LENGTH_SHORT).show();
                             user = (new JsonParser()).parse(response).getAsJsonObject();
                             String email = user.get("email").getAsString();
                             Toast.makeText(RegistrationActivity.this, email, Toast.LENGTH_LONG).show();
@@ -77,27 +166,28 @@ public class RegistrationActivity extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-                    //  mTextView.setText("That didn't work!");
                 }
             }) {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
+                    params.put("user[name]", userName);
                     params.put("user[email]", userEmail);
                     params.put("user[password]", userPassword);
+                    params.put("user[mobile_no]", userMobileNo);
                     return params;
                 }
             };
 
             queue.add(stringRequest);
         }
-        else
-        {
-            email.setError("Invalid Email");
-        }
-
 
     }
 
 
+
+
 }
+
+
+

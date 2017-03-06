@@ -163,10 +163,10 @@ public class ComicDetailsActivity extends AppCompatActivity {
         startActivity(comicDetailsIntent);
     }
 
-    public void onSignUp(View view)
+    public void onLoginClick(View view)
     {
-        Intent signUp = new Intent(this,RegistrationActivity.class);
-        startActivity(signUp);
+        Intent login = new Intent(this,LoginActivity.class);
+        startActivity(login);
     }
 
     private void startFetchingData()

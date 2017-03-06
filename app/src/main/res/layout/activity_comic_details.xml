@@ -128,11 +128,11 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/signUp"
-            android:onClick="onSignUp"
+            android:id="@+id/login"
+            android:onClick="onLoginClick"
             android:layout_marginBottom="5dp"
             android:background="#1Affffff"
-            android:text="Sign Up"/>
+            android:text="Login"/>
 
     </LinearLayout>
     </RelativeLayout>

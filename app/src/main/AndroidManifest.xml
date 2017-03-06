@@ -30,7 +30,8 @@
         <activity
             android:name=".Activities.ComicImagesGridActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.RegistrationActivity"></activity>
+        <activity android:name=".Activities.RegistrationActivity" />
+        <activity android:name=".Activities.LoginActivity"></activity>
     </application>
 
 </manifest>
