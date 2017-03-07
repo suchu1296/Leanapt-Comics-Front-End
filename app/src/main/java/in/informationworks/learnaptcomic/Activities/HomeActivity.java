@@ -1,11 +1,16 @@
 package in.informationworks.learnaptcomic.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,7 +30,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
 import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
@@ -37,9 +44,7 @@ import in.informationworks.learnaptcomic.R;
 import static in.informationworks.learnaptcomic.R.id.recyclerview_comic_card_list;
 
 public class HomeActivity extends AppCompatActivity {
-
-
-
+    Context context;
     ArrayList<CommonRecyclerItem> recyclerItems;
     HomeAdapter homeAdapter;
     List<SingleItemModel> receivedComicsData;
@@ -48,20 +53,35 @@ public class HomeActivity extends AppCompatActivity {
             SingleItemModel.COMIC_TYPE_POPULAR};
     ProgressBar progressbar;
     boolean featuredLoaded=false, popularLoaded = false;
+    int retrivedId;
+    String retrivedEmail;
+    Boolean isLoggedIn;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bindViews();
+        evaluateSharedPreferences();
         createCoverData();
         prepareRecyclerView();
     }
 
-    protected void bindViews()
+  protected void bindViews()
     {
         recyclerview_comic_card_list = (RecyclerView) findViewById(R.id.main_recycler_view);
       //  progressbar = (ProgressBar)findViewById(R.id.home_progressbar);
+    }
+
+    private void evaluateSharedPreferences()
+    {
+        sharedPref = getApplicationContext().getSharedPreferences("LearnaptComic_preference", getApplicationContext().MODE_PRIVATE);
+        retrivedId = sharedPref.getInt("responseId",0);
+        retrivedEmail = sharedPref.getString("responseEmail",null);
+        isLoggedIn = sharedPref.getBoolean("isLoggedIn",false);
+        String temps = String.valueOf(retrivedId);
+        Toast.makeText(this,temps,Toast.LENGTH_LONG).show();
     }
 
     protected void prepareRecyclerView()
@@ -94,7 +114,7 @@ public class HomeActivity extends AppCompatActivity {
                         Type listType = new TypeToken<ArrayList<SingleItemModel>>() {
                         }.getType();
                         receivedComicsData = new Gson().fromJson(jComicsArray, listType);
-                        Toast.makeText(getApplicationContext(),comicType,Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getApplicationContext(),comicType,Toast.LENGTH_SHORT).show();
                         CommonRecyclerItem cri1 = new CommonRecyclerItem(CommonRecyclerItem.TYPE_SECTION_DATA, receivedComicsData);
                         List<Object> options=new ArrayList<>();
                         options.add(comicType);
@@ -127,6 +147,71 @@ public class HomeActivity extends AppCompatActivity {
 
         CommonRecyclerItem cri=new CommonRecyclerItem(CommonRecyclerItem.TYPE_COVER_LIST,coverItems);
         recyclerItems.add(cri);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+
+        if(id == R.id.action_logout){
+           // Toast.makeText(this,"logout successful",Toast.LENGTH_LONG).show();
+            if(isLoggedIn)
+            {
+                //do logout procedure
+                String temps = String.valueOf(isLoggedIn);
+                Toast.makeText(this,temps,Toast.LENGTH_LONG).show();
+                RequestQueue queue = Volley.newRequestQueue(this);
+                String url = "http://192.168.2.30:3000/api/mobile/v1/users/logout";
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                //Toast.makeText(HomeActivity.this,response, Toast.LENGTH_LONG).show();
+                                if (response.equals("Logout Successful"))
+                                {
+                                    Toast.makeText(HomeActivity.this,response, Toast.LENGTH_LONG).show();
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.clear();
+                                    editor.commit();
+                                    String retrivedEmail11 = sharedPref.getString("responseEmail",null);
+                                    Toast.makeText(getApplicationContext(),retrivedEmail11,Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("id",String.valueOf(retrivedId));
+                        return params;
+                    }
+                };
+
+                queue.add(stringRequest);
+            }
+            else
+            {
+                Toast.makeText(this,"You are not logged in",Toast.LENGTH_LONG).show();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

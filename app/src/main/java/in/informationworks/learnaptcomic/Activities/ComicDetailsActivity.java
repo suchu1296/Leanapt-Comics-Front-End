@@ -70,10 +70,20 @@ public class ComicDetailsActivity extends AppCompatActivity {
         bindViews();
         setComicDetailsToolbar();
         readIntent();
+        //refreshViewsBasedOnLoginStatus();
         prepareRecyclerView();
         getData(comicID);
         startFetchingData();
     }
+
+  /*  private void refreshViewsBasedOnLoginStatus() {
+        if(user.isLoggedIn){
+            loginButton.hide
+                    menu.getitem[2].show
+                            download.show
+                                    vide.show
+        }
+    }*/
 
     private void setComicDetailsToolbar()
     {
@@ -117,6 +127,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         recyclerItems = new ArrayList<>();
         previewRecyclerView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
     }
+
 
     private void getData(int comicID) {
         RequestQueue queue = Volley.newRequestQueue(this);

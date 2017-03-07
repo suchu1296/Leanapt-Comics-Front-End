@@ -1,6 +1,8 @@
 package in.informationworks.learnaptcomic.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +33,10 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     String userLoginEmail,userLoginPassword;
     JsonObject userLogin;
-
+    Context context;
+    String responseEmail;
+    int responseId;
+    Boolean isLoggedIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +84,22 @@ public class LoginActivity extends AppCompatActivity {
                                 loginEmail.setError("Email Invalid");
                             } else {
                                 userLogin = (new JsonParser()).parse(response).getAsJsonObject();
-                                String email = userLogin.get("email").getAsString();
+                                responseEmail = userLogin.get("email").getAsString();
+                                responseId = userLogin.get("id").getAsInt();
+                                isLoggedIn=true;
                                 Toast.makeText(LoginActivity.this, userLogin.toString(), Toast.LENGTH_LONG).show();
+
+                                SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("LearnaptComic_preference", getApplicationContext().MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString("responseEmail",responseEmail);
+                                editor.putInt("responseId",responseId);
+                                editor.putBoolean("isLoggedIn",isLoggedIn);
+                                editor.commit();
+
+                                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                                startActivity(intent);
+
+
                             }
                         }
                     }, new Response.ErrorListener() {
