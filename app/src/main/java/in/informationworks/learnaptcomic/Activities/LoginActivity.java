@@ -72,15 +72,15 @@ public class LoginActivity extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            if (response.equals("\"Password Invalid\"")) {
+                            Toast.makeText(LoginActivity.this,response, Toast.LENGTH_LONG).show();
+                            if (response.equals("Password Invalid")) {
                                 loginPassword.setError("Password Invalid");
-                            } else if (response.equals("\"Email Invalid\"")) {
+                            } else if (response.equals("Email Invalid")) {
                                 loginEmail.setError("Email Invalid");
                             } else {
                                 userLogin = (new JsonParser()).parse(response).getAsJsonObject();
                                 String email = userLogin.get("email").getAsString();
                                 Toast.makeText(LoginActivity.this, userLogin.toString(), Toast.LENGTH_LONG).show();
-
                             }
                         }
                     }, new Response.ErrorListener() {
