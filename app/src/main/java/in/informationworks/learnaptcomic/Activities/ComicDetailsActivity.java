@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -34,10 +35,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
+import in.informationworks.learnaptcomic.Models.AppStorageAgent;
 import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
+
+import static android.view.View.INVISIBLE;
 
 public class ComicDetailsActivity extends AppCompatActivity {
     int temp;
@@ -52,7 +56,6 @@ public class ComicDetailsActivity extends AppCompatActivity {
     TextView pagesLabel;
     TextView comicPages;
     TextView comicSummary;
-    Button readNowButton;
     android.support.v7.widget.RecyclerView previewRecyclerView;
     Context context;
     HomeAdapter homeAdapter;
@@ -63,6 +66,8 @@ public class ComicDetailsActivity extends AppCompatActivity {
     RelativeLayout commicDetailsContent;
     Toolbar comicDetailsToolbar;
     ProgressBar progressBar;
+    Button loginButton,readNowButton,downloadButton;
+    Boolean isResumed = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,20 +75,26 @@ public class ComicDetailsActivity extends AppCompatActivity {
         bindViews();
         setComicDetailsToolbar();
         readIntent();
-        //refreshViewsBasedOnLoginStatus();
+        refreshViewsBasedOnLoginStatus();
         prepareRecyclerView();
         getData(comicID);
         startFetchingData();
+        isResumed = true;
     }
 
-  /*  private void refreshViewsBasedOnLoginStatus() {
-        if(user.isLoggedIn){
-            loginButton.hide
-                    menu.getitem[2].show
-                            download.show
-                                    vide.show
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(isResumed)
+        {
+            refreshViewsBasedOnLoginStatus();
         }
-    }*/
+
+
+        // put your code here...
+
+    }
 
     private void setComicDetailsToolbar()
     {
@@ -115,6 +126,25 @@ public class ComicDetailsActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.comic_details_progressbar);
         comicDetailsToolbar = (Toolbar) findViewById(R.id.comic_details_toolbar);
         comicSummary = (TextView) findViewById(R.id.comic_summary);
+        loginButton = (Button) findViewById(R.id.login);
+        downloadButton = (Button) findViewById(R.id.downloadButton);
+    }
+
+    private void refreshViewsBasedOnLoginStatus() {
+        if(AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext()))
+        {
+            loginButton.setVisibility(View.GONE);
+            downloadButton.setVisibility(View.VISIBLE);
+            supportInvalidateOptionsMenu();
+
+        }
+        else
+        {
+            loginButton.setVisibility(View.VISIBLE);
+            downloadButton.setVisibility(View.GONE);
+            supportInvalidateOptionsMenu();
+
+        }
     }
 
     private void readIntent()
@@ -155,7 +185,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
                         receivedComicImages = new Gson().fromJson(comicImagePreviewArray,listType);
                         setDataInRecyclerView();
                         commicDetailsContent.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(INVISIBLE);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -198,7 +228,18 @@ public class ComicDetailsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_comic_details, menu);
+
         return true;
+    }
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu)
+    {
+        if (!AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext())) {
+            menu.findItem(R.id.action_like).setVisible(false);
+           // Toast.makeText(getApplicationContext(),"disabled",Toast.LENGTH_LONG).show();
+        }
+        return super.onPrepareOptionsMenu(menu);
+
     }
 
     @Override

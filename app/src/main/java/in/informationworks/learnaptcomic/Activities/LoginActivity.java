@@ -23,6 +23,7 @@ import com.google.gson.JsonParser;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.informationworks.learnaptcomic.Models.AppStorageAgent;
 import in.informationworks.learnaptcomic.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -88,18 +89,13 @@ public class LoginActivity extends AppCompatActivity {
                                 responseId = userLogin.get("id").getAsInt();
                                 isLoggedIn=true;
                                 Toast.makeText(LoginActivity.this, userLogin.toString(), Toast.LENGTH_LONG).show();
-
-                                SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("LearnaptComic_preference", getApplicationContext().MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.putString("responseEmail",responseEmail);
-                                editor.putInt("responseId",responseId);
-                                editor.putBoolean("isLoggedIn",isLoggedIn);
-                                editor.commit();
-
+                                AppStorageAgent.setSharedStoreString("responseEmail",responseEmail,getApplicationContext());
+                                AppStorageAgent.setSharedStoreInt("responseId",responseId,getApplicationContext());
+                                AppStorageAgent.setSharedStoreBoolean("isLoggedIn",isLoggedIn,getApplicationContext());
+                                LoginActivity.this.finish();
                                 Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
-
-
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -125,6 +121,12 @@ public class LoginActivity extends AppCompatActivity {
     {
         Intent signUp = new Intent(this,RegistrationActivity.class);
         startActivity(signUp);
+    }
+
+    public void onForgotPassword(View view)
+    {
+        Intent intent = new Intent(this,ForgotPasswordActivity.class);
+        startActivity(intent);
     }
 
 }

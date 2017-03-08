@@ -35,12 +35,14 @@ import java.util.List;
 import java.util.Map;
 
 import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
+import in.informationworks.learnaptcomic.Models.AppStorageAgent;
 import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.CoverItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 
+import static in.informationworks.learnaptcomic.R.id.action_logout;
 import static in.informationworks.learnaptcomic.R.id.recyclerview_comic_card_list;
 
 public class HomeActivity extends AppCompatActivity {
@@ -57,29 +59,47 @@ public class HomeActivity extends AppCompatActivity {
     String retrivedEmail;
     Boolean isLoggedIn;
     SharedPreferences sharedPref;
+    Boolean isResumed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bindViews();
+        //refreshViewsBasedOnLoginStatus();
         evaluateSharedPreferences();
         createCoverData();
         prepareRecyclerView();
+        isResumed = true;
     }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(isResumed)
+        {
+            refreshViewsBasedOnLoginStatus();
+        }
+     }
 
-  protected void bindViews()
+
+
+    protected void bindViews()
     {
         recyclerview_comic_card_list = (RecyclerView) findViewById(R.id.main_recycler_view);
       //  progressbar = (ProgressBar)findViewById(R.id.home_progressbar);
     }
+    private void refreshViewsBasedOnLoginStatus()
+    {
+        supportInvalidateOptionsMenu();
+    }
 
     private void evaluateSharedPreferences()
     {
-        sharedPref = getApplicationContext().getSharedPreferences("LearnaptComic_preference", getApplicationContext().MODE_PRIVATE);
-        retrivedId = sharedPref.getInt("responseId",0);
-        retrivedEmail = sharedPref.getString("responseEmail",null);
-        isLoggedIn = sharedPref.getBoolean("isLoggedIn",false);
+       sharedPref = getApplicationContext().getSharedPreferences("LearnaptComic_preference", getApplicationContext().MODE_PRIVATE);
+        retrivedId = AppStorageAgent.getSharedStoredInt("responseId",getApplicationContext());
+        retrivedEmail = AppStorageAgent.getSharedStoredString("responseEmail",getApplicationContext());
+        isLoggedIn = AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext());
         String temps = String.valueOf(retrivedId);
         Toast.makeText(this,temps,Toast.LENGTH_LONG).show();
     }
@@ -155,6 +175,16 @@ public class HomeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu)
+    {
+        if (!AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext())) {
+            menu.findItem(R.id.action_logout).setVisible(false);
+            // Toast.makeText(getApplicationContext(),"disabled",Toast.LENGTH_LONG).show();
+        }
+        return super.onPrepareOptionsMenu(menu);
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -181,12 +211,13 @@ public class HomeActivity extends AppCompatActivity {
                                 //Toast.makeText(HomeActivity.this,response, Toast.LENGTH_LONG).show();
                                 if (response.equals("Logout Successful"))
                                 {
-                                    Toast.makeText(HomeActivity.this,response, Toast.LENGTH_LONG).show();
-                                    SharedPreferences.Editor editor = sharedPref.edit();
-                                    editor.clear();
-                                    editor.commit();
+                                   // Toast.makeText(HomeActivity.this,response, Toast.LENGTH_LONG).show();
+                                    AppStorageAgent.removeEntries(getApplicationContext());
                                     String retrivedEmail11 = sharedPref.getString("responseEmail",null);
-                                    Toast.makeText(getApplicationContext(),retrivedEmail11,Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getApplicationContext(),retrivedEmail11,Toast.LENGTH_LONG).show();
+                                   // Intent intent = new Intent(HomeActivity.this,HomeActivity.class);
+                                   // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                   // startActivity(intent);
                                 }
                             }
                         }, new Response.ErrorListener() {

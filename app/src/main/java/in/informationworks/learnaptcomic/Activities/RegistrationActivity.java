@@ -1,5 +1,6 @@
 package in.informationworks.learnaptcomic.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.informationworks.learnaptcomic.Models.AppStorageAgent;
 import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
 import in.informationworks.learnaptcomic.R;
 
@@ -42,7 +44,9 @@ public class RegistrationActivity extends AppCompatActivity
     Button button2;
     String userName,userEmail,userPassword,userConfirmPassword,userMobileNo;
     JsonObject user;
-    AwesomeValidation awesomeValidation;
+    String responseEmail;
+    int responseId;
+    Boolean isLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,8 +163,17 @@ public class RegistrationActivity extends AppCompatActivity
                         @Override
                         public void onResponse(String response) {
                             user = (new JsonParser()).parse(response).getAsJsonObject();
-                            String email = user.get("email").getAsString();
-                            Toast.makeText(RegistrationActivity.this, email, Toast.LENGTH_LONG).show();
+                            responseEmail = user.get("email").getAsString();
+                            responseId = user.get("id").getAsInt();
+                            isLoggedIn=true;
+                            //Toast.makeText(RegistrationActivity.this, email, Toast.LENGTH_LONG).show();
+                            AppStorageAgent.setSharedStoreString("responseEmail",responseEmail,getApplicationContext());
+                            AppStorageAgent.setSharedStoreInt("responseId",responseId,getApplicationContext());
+                            AppStorageAgent.setSharedStoreBoolean("isLoggedIn",isLoggedIn,getApplicationContext());
+                            RegistrationActivity.this.finish();
+                            Intent intent = new Intent(RegistrationActivity.this,HomeActivity.class);
+                           // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
                         }
                     }, new Response.ErrorListener() {
                 @Override
