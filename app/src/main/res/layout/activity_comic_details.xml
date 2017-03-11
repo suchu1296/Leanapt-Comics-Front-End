@@ -133,6 +133,14 @@
             android:layout_marginBottom="5dp"
             android:background="#1Affffff"
             android:text="Login"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buy_button"
+            android:onClick="onBuyClick"
+            android:layout_marginBottom="5dp"
+            android:background="#1Affffff"
+            android:text="Buy"/>
 
     </LinearLayout>
     </RelativeLayout>

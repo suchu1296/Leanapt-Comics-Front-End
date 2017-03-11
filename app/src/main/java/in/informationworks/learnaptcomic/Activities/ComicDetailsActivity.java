@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,6 +41,10 @@ import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
+import in.informationworks.learnaptcomic.util.IabHelper;
+import in.informationworks.learnaptcomic.util.IabResult;
+import in.informationworks.learnaptcomic.util.Inventory;
+import in.informationworks.learnaptcomic.util.Purchase;
 
 import static android.view.View.INVISIBLE;
 
@@ -66,8 +71,12 @@ public class ComicDetailsActivity extends AppCompatActivity {
     RelativeLayout commicDetailsContent;
     Toolbar comicDetailsToolbar;
     ProgressBar progressBar;
-    Button loginButton,readNowButton,downloadButton;
+    Button loginButton,readNowButton,downloadButton,buyButton;
     Boolean isResumed = false;
+    //for purchase
+    static final String TAG = "In-App-Billing";
+    IabHelper mHelper;
+    String PRODUCT_ID = "demo_comic_product_1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +89,10 @@ public class ComicDetailsActivity extends AppCompatActivity {
         getData(comicID);
         startFetchingData();
         isResumed = true;
+        //PURCHASE PART
+        setConnection();
     }
+
 
     @Override
     public void onResume()
@@ -90,10 +102,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         {
             refreshViewsBasedOnLoginStatus();
         }
-
-
         // put your code here...
-
     }
 
     private void setComicDetailsToolbar()
@@ -128,6 +137,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         comicSummary = (TextView) findViewById(R.id.comic_summary);
         loginButton = (Button) findViewById(R.id.login);
         downloadButton = (Button) findViewById(R.id.downloadButton);
+        buyButton = (Button) findViewById(R.id.buy_button);
     }
 
     private void refreshViewsBasedOnLoginStatus() {
@@ -135,6 +145,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         {
             loginButton.setVisibility(View.GONE);
             downloadButton.setVisibility(View.VISIBLE);
+            buyButton.setVisibility(View.VISIBLE);
             supportInvalidateOptionsMenu();
 
         }
@@ -142,6 +153,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         {
             loginButton.setVisibility(View.VISIBLE);
             downloadButton.setVisibility(View.GONE);
+            buyButton.setVisibility(View.GONE);
             supportInvalidateOptionsMenu();
 
         }
@@ -263,8 +275,158 @@ public class ComicDetailsActivity extends AppCompatActivity {
         if(id == R.id.action_settings){
             Toast.makeText(this,"setting",Toast.LENGTH_LONG).show();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    //PURCHASE PART
+    private void setConnection() {
+        String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq4Wr4meWb0kIif1Kg0NYTiBhGq6UPDT5nXWrVE2yzRG4wP4ciqNo4SMsrMrCSSVcyZGKEVWIdgUZiDqfsvvum6+u5Ld1a+DSuNYTPtluRz/300Xzyg5yntQKPKekPN071INBJLRLol9t/MF48KhXmZDRRANtO35V1aoEgUnT8f5LtZcRVFa8gHkz8IFNe8/eyq5PK77Z+fqEwqAOHwLJpthd0WHWsQwPTE1jof+pluTdsW6xclCutC2ALxKplqFKxCqfSGEYbKCdKpD2CtqozDQpjOXGyO/WMltkKgdUmryIt55EpF0I/wXkOiGLtmBIAtH62PKaMnZzzwZyaH0ZjQIDAQAB";
+        Log.d(TAG,"Creating IAB helper");
+        mHelper = new IabHelper(this, base64EncodedPublicKey);
+        mHelper.enableDebugLogging(false);
+
+        Log.d(TAG, "Starting setup.");
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                Log.d(TAG, "Setup finished.");
+
+                if (!result.isSuccess()) {
+                    complain("Problem setting up in-app billing: " + result);
+                    return;
+                }
+                if (mHelper == null) return;
+                Log.d(TAG, "Setup successful.");
+                // IAB is fully set up. Now, let's get an inventory of stuff we own.
+                Log.d(TAG, "Setup successful. Querying inventory.");
+                try {
+                    mHelper.queryInventoryAsync(mGotInventoryListener);
+                } catch (IabHelper.IabAsyncInProgressException e) {
+                    complain("Error querying inventory. Another async operation in progress.");
+                }
+            }
+        });
+    }
+
+    void complain(String message) {
+        Log.e(TAG, "**** ComicPurchase Error: " + message);
+    }
+
+    // Listener that's called when we finish querying the items and subscriptions we own
+    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+            Log.d(TAG, "Query inventory finished.");
+
+            // Have we been disposed of in the meantime? If so, quit.
+            if (mHelper == null) return;
+
+            // Is it a failure?
+            if (result.isFailure()) {
+                complain("Failed to query inventory: " + result);
+                return;
+            }
+
+            Purchase comicPurchase = inventory.getPurchase(PRODUCT_ID);
+            if (comicPurchase != null && verifyDeveloperPayload(comicPurchase)) {
+                Log.d(TAG, "We have Lesson1.");
+                try {
+                    mHelper.consumeAsync(inventory.getPurchase(PRODUCT_ID), mConsumeFinishedListener);
+                } catch (IabHelper.IabAsyncInProgressException e) {
+                    complain("Error consuming Lesson1. Another async operation in progress.");
+                }
+                return;
+            }
+        }
+    };
+
+    /** Verifies the developer payload of a purchase. */
+    boolean verifyDeveloperPayload(Purchase p) {
+        String payload = p.getDeveloperPayload();
+        Toast.makeText(this, "Payload is "+payload, Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    // Called when consumption is complete
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+        public void onConsumeFinished(Purchase purchase, IabResult result) {
+            Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
+
+            if (mHelper == null) return;
+            if (result.isSuccess()) {
+                Log.d(TAG, "Consumption successful. Provisioning.");
+            }
+            else {
+                complain("Error while consuming: " + result);
+            }
+            Log.d(TAG, "End consumption flow.");
+        }
+    };
+    public void onBuyClick(View view)
+    {
+       /*if (getActiveCourse() != null) {
+            if (getActiveCourse().isPaid()) {
+                if (getActiveCourse().isPurchased()) {
+                    launchCurrentLesson();
+                } else {
+                     getActiveCourse().promptForAppUpdate(this);}
+                    purchaseCourse();
+                }
+            }
+            else {
+                launchCurrentLesson();
+            }
+        }*/
+        buyComic();
+    }
+
+    private void buyComic() {
+        Log.d(TAG, "Buy lesson1 button clicked.");
+        // We will be notified of completion via mPurchaseFinishedListener
+        Log.d(TAG, "Launching purchase flow for gas.");
+
+        /* TODO: for security, generate your payload here for verification. See the comments on
+         *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
+         *        an empty string, but on a production app you should carefully generate this. */
+        String payload = "order6";
+
+        try {
+            mHelper.launchPurchaseFlow(this,PRODUCT_ID,10001,
+                    mPurchaseFinishedListener, payload);
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            complain("Error launching purchase flow. Another async operation in progress.");
+
+        }
+    }
+
+    // Callback for when a purchase is finished
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
+
+            // if we were disposed of in the meantime, quit.
+            if (mHelper == null) return;
+
+            if (result.isFailure()) {
+                complain("Error purchasing: " + result);
+                return;
+            }
+            if (!verifyDeveloperPayload(purchase)) {
+                complain("Error purchasing. Authenticity verification failed.");
+                return;
+            }
+
+            Log.d(TAG, "Purchase successful.");
+
+            if (purchase.getSku().equals(PRODUCT_ID)) {
+                // bought lesson1. So read it.
+                Log.d(TAG, "Purchase is lesson1. Starting lesson reading.");
+                try {
+                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                } catch (IabHelper.IabAsyncInProgressException e) {
+                    complain("Error consuming gas. Another async operation in progress.");
+                    return;
+                }
+            }
+
+        }
+    };
 }
