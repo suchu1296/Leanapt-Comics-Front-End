@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -41,6 +43,7 @@ import in.informationworks.learnaptcomic.R;
 
 import static android.provider.ContactsContract.QuickContact.EXTRA_MODE;
 import static in.informationworks.learnaptcomic.Models.SingleItemModel.COMIC_TYPE_FEATURED;
+import static in.informationworks.learnaptcomic.R.style.AppTheme;
 
 public class FeaturedComicsActivity extends AppCompatActivity {
     HomeAdapter homeAdapter;
@@ -54,6 +57,7 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     /** Android Views **/
     RelativeLayout activityFeaturedComics;
     android.support.v7.widget.RecyclerView recyclerviewFeaturedComics;
+
 
     /** Android Views **/
 
@@ -72,6 +76,17 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         selectType();
         prepareRecyclerView();
         startFetchingData();
+        setStatusBarColour();
+
+    }
+
+    public void setStatusBarColour() {
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
+        }
     }
 
     private void bindViews(){
@@ -118,6 +133,7 @@ public class FeaturedComicsActivity extends AppCompatActivity {
                 FeaturedComicsActivity.this.finish();
             }
         });
+
     }
 
     private void startFetchingData() {
@@ -130,14 +146,15 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     }
 
     private void prepareRecyclerView() {
-        GridLayoutManager gridLayoutManager=new GridLayoutManager(context,3);
-        recyclerviewFeaturedComics.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        //GridLayoutManager gridLayoutManager=new GridLayoutManager(context,);
+        recyclerviewFeaturedComics.setLayoutManager(linearLayoutManager);
     }
 
     private void setDataInRecyclerView(List<SingleItemModel> receivedComicsData) {
         comicDataModels.addAll(receivedComicsData);
         for (SingleItemModel singleItemModel : receivedComicsData) {
-            recyclerItems.add(new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_ITEM,singleItemModel));
+            recyclerItems.add(new CommonRecyclerItem(CommonRecyclerItem.TYPT_HORIZONTAL_COMIC_CARD,singleItemModel));
         }
         homeAdapter.notifyItemRangeInserted(comicDataModels.size()-receivedComicsData.size(),receivedComicsData.size());
     }

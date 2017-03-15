@@ -21,6 +21,7 @@ public class SingleItemModel {
     public static final String EXTRA_ID = "extraID";
     public static final String EXTRA_IMAGE_URL = "extraImageURL";
     public static final String EXTRA_NAME = "extraName";
+   // public static final String PAGES_COUNT = "extraID";
     @SerializedName("id")
     @Expose
     private int id;
@@ -30,6 +31,22 @@ public class SingleItemModel {
     @SerializedName("image_url")
     @Expose
     private String imageUrl;
+    @SerializedName("pages_count")
+    @Expose
+    private int pagesCount;
+    @SerializedName("paid")
+    @Expose
+    private boolean paid;
+
+
+
+    public int getPagesCount() {
+        return pagesCount;
+    }
+
+    public void setPagesCount(int pagesCount) {
+        this.pagesCount = pagesCount;
+    }
 
     public int getId() {
         return id;
@@ -57,5 +74,12 @@ public class SingleItemModel {
     }
 
 
+    public boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
 }
 

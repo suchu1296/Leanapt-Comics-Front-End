@@ -12,6 +12,7 @@ import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.viewholders.ComicCardGridListViewHolder;
 import in.informationworks.learnaptcomic.viewholders.CoverItemListViewHolder;
+import in.informationworks.learnaptcomic.viewholders.HorizontalComicCardViewHolder;
 import in.informationworks.learnaptcomic.viewholders.SingleComicCardGridItemViewHolder;
 import in.informationworks.learnaptcomic.viewholders.SingleComicCardPreviewItemViewHolder;
 import in.informationworks.learnaptcomic.viewholders.SingleCoverViewHolder;
@@ -57,6 +58,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
         }else if(viewType == CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE) {
             rootView = inflater.inflate(R.layout.vh_single_comic_preview_card, parent, false);
             return new SingleComicCardPreviewItemViewHolder(rootView);
+        }else if(viewType == CommonRecyclerItem.TYPT_HORIZONTAL_COMIC_CARD) {
+            rootView = inflater.inflate(R.layout.vh_horizontal_comic_card, parent, false);
+            return new HorizontalComicCardViewHolder(rootView);
         }
         return null;
     }
@@ -84,6 +88,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
                 return;
             case CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE:
                 ((SingleComicCardPreviewItemViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
+                return;
+            case CommonRecyclerItem.TYPT_HORIZONTAL_COMIC_CARD:
+                ((HorizontalComicCardViewHolder)holder).bindCRItem(context,recyclerItems.get(position));
                 return;
         }
     }

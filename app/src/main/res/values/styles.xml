@@ -8,6 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
 
     </style>
+    <style name="CustomComicsBar" parent="AppTheme.NoActionBar">
+        <item name="colorControlNormal">#ffffff</item>
+        <item name="android:textColorSecondary">@color/colorRed</item>
+    </style>
+
+    <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/grid</item>
+    </style>
 
     <style name="ComicPlayerBar" parent="AppTheme">
         <item name="colorPrimary">@color/colorRed</item>
