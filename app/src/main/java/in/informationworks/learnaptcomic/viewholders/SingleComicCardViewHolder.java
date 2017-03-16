@@ -23,6 +23,7 @@ import in.informationworks.learnaptcomic.R;
 public class SingleComicCardViewHolder extends RecyclerView.ViewHolder {
     ImageView comic_card_image;
     TextView comic_card_text;
+    TextView paidLabel;
     String id;
 
 
@@ -31,11 +32,22 @@ public class SingleComicCardViewHolder extends RecyclerView.ViewHolder {
 
         comic_card_image=(ImageView)itemView.findViewById(R.id.comic_card_image);
         comic_card_text=(TextView)itemView.findViewById(R.id.comic_card_text);
+        paidLabel = (TextView) itemView.findViewById(R.id.Paid_lable);
     }
     public void bindCRI(Context context, CommonRecyclerItem recyclerItem)
     {
         final SingleItemModel singleItemModel = (SingleItemModel)recyclerItem.getItem();
         comic_card_text.setText(singleItemModel.getName());
+        boolean ispaid = singleItemModel.getPaid();
+        float price = singleItemModel.getPrice();
+        if(ispaid)
+        {
+            paidLabel.setText("₹"+String.valueOf(price));
+        }
+        else
+        {
+            paidLabel.setText("FREE");
+        }
         Picasso.with(context).load(singleItemModel.getImageUrl()).error(R.drawable.ic_menu_manage).into(comic_card_image);
 
         itemView.setOnClickListener(new View.OnClickListener(){

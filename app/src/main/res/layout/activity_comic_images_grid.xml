@@ -4,8 +4,7 @@
     android:id="@+id/activity_comic_images_grid"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.informationworks.learnaptcomic.Activities.ComicImagesGridActivity"
-    android:background="@color/colorPrimary">
+    tools:context="in.informationworks.learnaptcomic.Activities.ComicImagesGridActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"

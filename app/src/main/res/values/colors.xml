@@ -7,4 +7,9 @@
     <color name="colorRed">#FF0000</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="FreeGreen">#4CAF50</color>
+    <color name="White">#ffffff</color>
+    <color name="TransparentWhite">#1Affffff</color>
+    <color name="MoreTransparentWthite">#0Dffffff</color>
+    <color name="TransparentBlack">#1A000000</color>
 </resources>

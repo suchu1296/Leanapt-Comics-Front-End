@@ -38,13 +38,14 @@ public class HorizontalComicCardViewHolder extends RecyclerView.ViewHolder  {
         horizontalComicCardText.setText(singleItemModel.getName());
         horizontalComicPageCount.setText(String.valueOf(singleItemModel.getPagesCount()));
         boolean ispaid = singleItemModel.getPaid();
+        float price = singleItemModel.getPrice();
         if(ispaid)
         {
-          horizontalComicPaid.setText("FREE");
+          horizontalComicPaid.setText("₹"+String.valueOf(price));
         }
         else
         {
-            horizontalComicPaid.setText("PAID");
+            horizontalComicPaid.setText("FREE");
         }
 
 

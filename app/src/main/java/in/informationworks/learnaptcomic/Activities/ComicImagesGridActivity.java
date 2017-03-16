@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +55,7 @@ public class ComicImagesGridActivity extends AppCompatActivity {
         comicImageGridRecyclerview = (android.support.v7.widget.RecyclerView) findViewById(R.id.comic_image_grid_recyclerview);
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,7 @@ public class ComicImagesGridActivity extends AppCompatActivity {
         getDataFromJson();
         startFetchingData();
         setTitle();
+        setStatusBarColour();
     }
     private void readIntent()
     {
@@ -72,6 +76,15 @@ public class ComicImagesGridActivity extends AppCompatActivity {
         StringjsonObject = (comicImagePlayer.getStringExtra("jsonObject"));
         Toast.makeText(this, "comic id:"+comicID, Toast.LENGTH_SHORT).show();
         jsonObject = (new JsonParser()).parse(StringjsonObject).getAsJsonObject();
+    }
+
+    public void setStatusBarColour() {
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimaryDark));
+        }
     }
 
     private  void getDataFromJson()

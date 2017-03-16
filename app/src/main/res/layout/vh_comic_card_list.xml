@@ -15,8 +15,10 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:text="Section Sample"
-        android:textColor="@android:color/black" />
+        android:textColor="#424242"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:paddingLeft="10dp"/>
 
     <Button
         android:id="@+id/see_all_button"
@@ -26,9 +28,13 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_alignRight="@+id/catagory_label"
-        android:text="See All"/>
+        android:text="MORE"
+        android:background="#0Dffffff"
+        android:textColor="@color/colorPrimaryDark"
+        />
 
 </RelativeLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_comic_card_list"
@@ -37,5 +43,6 @@
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
        />
+
 
 </LinearLayout>

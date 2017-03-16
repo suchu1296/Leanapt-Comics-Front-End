@@ -27,6 +27,7 @@ public class SingleItemModel {
     private int id;
     @SerializedName("name")
     @Expose
+
     private String name;
     @SerializedName("image_url")
     @Expose
@@ -37,6 +38,9 @@ public class SingleItemModel {
     @SerializedName("paid")
     @Expose
     private boolean paid;
+    @SerializedName("price")
+    @Expose
+    private int price;
 
 
 
@@ -81,5 +85,15 @@ public class SingleItemModel {
     public void setPaid(boolean paid) {
         this.paid = paid;
     }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+
 }
 

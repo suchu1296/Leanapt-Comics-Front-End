@@ -16,6 +16,5 @@
     <ImageView
         android:layout_width="150dp"
         android:layout_height="200dp"
-        android:background="@drawable/step1"
         android:id="@+id/imageView2" />
 </RelativeLayout>
