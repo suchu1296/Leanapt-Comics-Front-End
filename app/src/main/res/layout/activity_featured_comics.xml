@@ -50,6 +50,8 @@
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
+        <include layout="@layout/arc_menu"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

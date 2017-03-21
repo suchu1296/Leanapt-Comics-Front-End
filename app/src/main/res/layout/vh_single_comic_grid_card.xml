@@ -32,6 +32,7 @@
         android:layout_width="110dp"
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
+        android:scaleType="fitXY"
         android:src="@drawable/a2"/>
     <TextView
         android:id="@+id/grid_pagenumber"

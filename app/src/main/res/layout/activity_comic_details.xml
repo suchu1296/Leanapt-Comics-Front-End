@@ -5,8 +5,8 @@
     android:id="@+id/activity_comic_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/blurr"
-    tools:context="in.informationworks.learnaptcomic.Activities.ComicDetailsActivity">
+    tools:context="in.informationworks.learnaptcomic.Activities.ComicDetailsActivity"
+    android:background="@color/White">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/comic_details_toolbar"
@@ -31,6 +31,12 @@
         android:layout_below="@+id/comic_details_toolbar"
         android:visibility="gone">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +61,7 @@
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
                 android:paddingLeft="5dp"
-                android:paddingTop="5dp"/>
+                android:paddingTop="5dp" />
             <fr.castorflex.android.circularprogressbar.CircularProgressBar
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -104,6 +110,7 @@
             android:textSize="20dp"
             android:layout_marginBottom="5dp"
             android:textColor="@color/colorBlack"
+            android:layout_marginTop="10dp"
             android:layout_weight="0.16" />
 
         <Button
@@ -149,12 +156,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/relative2"
-            android:paddingLeft="5dp">
+            android:layout_marginTop="15dp"
+            android:paddingLeft="10dp">
         <TextView
             android:text="Size:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sizeLabel"
+            android:textSize="20dp"
             android:textColor="@color/colorBlack"/>
 
             <TextView
@@ -162,6 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/sizeLabel"
                 android:id="@+id/comicSize"
+                android:textSize="20dp"
                 android:textColor="@color/colorBlack"/>
 
             <TextView
@@ -170,6 +180,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/sizeLabel"
                 android:id="@+id/pagesLabel"
+                android:layout_marginTop="5dp"
+                android:textSize="20dp"
                 android:textColor="@color/colorBlack"/>
 
             <TextView
@@ -178,6 +190,8 @@
                 android:layout_below="@+id/comicSize"
                 android:layout_toRightOf="@+id/pagesLabel"
                 android:id="@+id/comicPages"
+                android:textSize="20dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/colorBlack"/>
 
             <TextView
@@ -187,6 +201,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pagesLabel"
                 android:textSize="20dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/colorBlack"
                 android:layout_weight="0.16"/>
 
@@ -196,7 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/summary_label"
-                android:textSize="16dp"
+                android:textSize="18dp"
                 android:textColor="@color/colorBlack"
                 android:layout_weight="0.16"/>
 
@@ -207,6 +222,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/comic_summary"
                 android:textSize="20dp"
+                android:layout_marginTop="7dp"
                 android:textColor="@color/colorBlack"
                 android:layout_weight="0.16"/>
 
@@ -214,9 +230,12 @@
                 android:id="@+id/preview_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/preview_label" />
+                android:layout_below="@+id/preview_label"
+                android:layout_marginTop="3dp"/>
 
                 </RelativeLayout>
-
+        </RelativeLayout>
+    </ScrollView>
     </RelativeLayout>
+
 </RelativeLayout>

@@ -75,6 +75,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
     ProgressBar progressBar;
     Button loginButton,readNowButton,downloadButton,buyButton;
     Boolean isResumed = false;
+    Boolean ispaid;
     //for purchase
     static final String TAG = "In-App-Billing";
     IabHelper mHelper;
@@ -90,11 +91,14 @@ public class ComicDetailsActivity extends AppCompatActivity {
         prepareRecyclerView();
         getData(comicID);
         startFetchingData();
+        setStatusBarColour();
         isResumed = true;
         //PURCHASE PART
         setConnection();
-        setStatusBarColour();
+
     }
+
+
 
     public void setStatusBarColour() {
         if (android.os.Build.VERSION.SDK_INT >= 21) {
@@ -110,9 +114,8 @@ public class ComicDetailsActivity extends AppCompatActivity {
         super.onResume();
         if(isResumed)
         {
-            refreshViewsBasedOnLoginStatus();
+           // refreshViewsBasedOnLoginStatus();
         }
-        // put your code here...
     }
 
     private void setComicDetailsToolbar()
@@ -194,6 +197,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
                         comicname=comicObject.get("name").getAsString();
                         comicpages=comicObject.get("pages_count").getAsString();
                         comicsize=comicObject.get("size").getAsString();
+                        ispaid = comicObject.get("paid").getAsBoolean();
                         comicsummary=comicObject.get("short_description").getAsString();
                         JsonObject coverImageObject = comicObject.get("cover_image").getAsJsonObject();
                         comicImageURL = coverImageObject.get("compressed_image_url").getAsString();

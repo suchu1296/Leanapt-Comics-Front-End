@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.sa90.materialarcmenu.ArcMenu
+        android:id="@+id/arcMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        app:menu_scr="@drawable/menuicon"
+        app:menu_open="arc_left"
+        app:menu_color="@color/colorPrimary">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/home_button"
+            android:layout_width="wrap_content"
+            android:src="@drawable/homeicon"
+            app:backgroundTint="@color/TransperntBlue"
+            android:layout_height="wrap_content"
+            android:onClick="onHomeButtonClick"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/profile_button"
+            android:layout_width="wrap_content"
+            android:src="@drawable/userprofileicon"
+            app:backgroundTint="@color/TransperntBlue"
+            android:layout_height="wrap_content"
+            android:onClick="onProfileButtonClick"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:src="@drawable/search"
+            app:backgroundTint="@color/TransperntBlue"
+            android:layout_height="wrap_content" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:src="@drawable/like"
+            app:backgroundTint="@color/TransperntBlue"
+            android:layout_height="wrap_content" />
+
+    </com.sa90.materialarcmenu.ArcMenu>
+
+</RelativeLayout>

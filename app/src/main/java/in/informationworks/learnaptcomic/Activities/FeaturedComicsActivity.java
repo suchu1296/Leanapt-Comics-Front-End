@@ -2,6 +2,7 @@ package in.informationworks.learnaptcomic.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -54,6 +56,8 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     String mode1,selectedType;
     Toolbar featuredComicsToolbar;
     ProgressBar progressbar;
+    FloatingActionButton homeButton;
+    FloatingActionButton profileButton;
     /** Android Views **/
     RelativeLayout activityFeaturedComics;
     android.support.v7.widget.RecyclerView recyclerviewFeaturedComics;
@@ -80,6 +84,8 @@ public class FeaturedComicsActivity extends AppCompatActivity {
 
     }
 
+
+
     public void setStatusBarColour() {
         if (android.os.Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -93,6 +99,8 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         activityFeaturedComics = (RelativeLayout) findViewById(R.id.activity_featured_comics);
         recyclerviewFeaturedComics = (android.support.v7.widget.RecyclerView) findViewById(R.id.recyclerview_featured_comics);
         featuredComicsToolbar = (Toolbar) findViewById(R.id.featured_comics_toolbar);
+        homeButton = (FloatingActionButton) findViewById(R.id.home_button);
+        profileButton = (FloatingActionButton) findViewById(R.id.profile_button);
     }
 
     public void readintent()
@@ -218,5 +226,16 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onHomeButtonClick(View view)
+    {
+        Intent intent = new Intent(this,HomeActivity.class);
+        startActivity(intent);
+    }
+    public void onProfileButtonClick(View view)
+    {
+        Intent intent = new Intent(this,ProfileActivity.class);
+        startActivity(intent);
     }
 }
