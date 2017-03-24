@@ -33,7 +33,13 @@
         <activity android:name=".Activities.RegistrationActivity" />
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.ProfileActivity" />
-        <activity android:name=".Activities.ForgotPasswordActivity"></activity>
+        <activity android:name=".Activities.ForgotPasswordActivity" />
+        <activity
+            android:name=".Activities.ComicImagesPreviewActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_comic_images_preview"
+            ></activity>
     </application>
 
 </manifest>

@@ -41,6 +41,7 @@ import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.CoverItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
+import in.informationworks.learnaptcomic.helper.LCHelper;
 
 import static in.informationworks.learnaptcomic.R.id.action_logout;
 import static in.informationworks.learnaptcomic.R.id.recyclerview_comic_card_list;
@@ -66,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bindViews();
-        //refreshViewsBasedOnLoginStatus();
+        refreshViewsBasedOnLoginStatus();
         evaluateSharedPreferences();
         createCoverData();
         prepareRecyclerView();
@@ -94,7 +95,7 @@ public class HomeActivity extends AppCompatActivity {
         supportInvalidateOptionsMenu();
     }
 
-    private void evaluateSharedPreferences()
+    public void evaluateSharedPreferences()
     {
        sharedPref = getApplicationContext().getSharedPreferences("LearnaptComic_preference", getApplicationContext().MODE_PRIVATE);
         retrivedId = AppStorageAgent.getSharedStoredInt("responseId",getApplicationContext());
@@ -180,7 +181,13 @@ public class HomeActivity extends AppCompatActivity {
     {
         if (!AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext())) {
             menu.findItem(R.id.action_logout).setVisible(false);
+            menu.findItem(R.id.action_login).setVisible(true);
             // Toast.makeText(getApplicationContext(),"disabled",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            menu.findItem(R.id.action_login).setVisible(false);
+            menu.findItem(R.id.action_logout).setVisible(true);
         }
         return super.onPrepareOptionsMenu(menu);
 
@@ -196,8 +203,7 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
 
         if(id == R.id.action_logout){
-           // Toast.makeText(this,"logout successful",Toast.LENGTH_LONG).show();
-            if(isLoggedIn)
+           if(isLoggedIn)
             {
                 //do logout procedure
                 String temps = String.valueOf(isLoggedIn);
@@ -208,16 +214,10 @@ public class HomeActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                //Toast.makeText(HomeActivity.this,response, Toast.LENGTH_LONG).show();
                                 if (response.equals("Logout Successful"))
                                 {
-                                   // Toast.makeText(HomeActivity.this,response, Toast.LENGTH_LONG).show();
                                     AppStorageAgent.removeEntries(getApplicationContext());
                                     String retrivedEmail11 = sharedPref.getString("responseEmail",null);
-                                    //Toast.makeText(getApplicationContext(),retrivedEmail11,Toast.LENGTH_LONG).show();
-                                   // Intent intent = new Intent(HomeActivity.this,HomeActivity.class);
-                                   // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                   // startActivity(intent);
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -240,6 +240,11 @@ public class HomeActivity extends AppCompatActivity {
             {
                 Toast.makeText(this,"You are not logged in",Toast.LENGTH_LONG).show();
             }
+        }
+        if(id == R.id.action_login){
+            Intent login = new Intent(this,LoginActivity.class);
+            //HomeActivity.this.finish();
+            startActivity(login);
         }
 
         return super.onOptionsItemSelected(item);

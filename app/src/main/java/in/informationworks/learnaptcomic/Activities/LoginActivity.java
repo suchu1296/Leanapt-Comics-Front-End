@@ -93,9 +93,9 @@ public class LoginActivity extends AppCompatActivity {
                                 AppStorageAgent.setSharedStoreInt("responseId",responseId,getApplicationContext());
                                 AppStorageAgent.setSharedStoreBoolean("isLoggedIn",isLoggedIn,getApplicationContext());
                                 LoginActivity.this.finish();
-                                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                               // Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                                 //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                               // startActivity(intent);
                             }
                         }
                     }, new Response.ErrorListener() {

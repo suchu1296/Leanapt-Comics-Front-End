@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import in.informationworks.learnaptcomic.Activities.ComicDetailsActivity;
 import in.informationworks.learnaptcomic.Activities.ComicImagePlayerActivity;
 import in.informationworks.learnaptcomic.Activities.ComicImagesGridActivity;
 import in.informationworks.learnaptcomic.Models.ComicCardGridItem;
@@ -24,18 +25,27 @@ import static in.informationworks.learnaptcomic.R.id.preview_thumbimg;
 
 public class SingleComicCardPreviewItemViewHolder extends RecyclerView.ViewHolder {
     ImageView previewThumbImageView;
+    ComicDetailsActivity comicDetailsActivity;
+    View view;
+
     public SingleComicCardPreviewItemViewHolder(View itemView) {
         super(itemView);
         previewThumbImageView=(ImageView)itemView.findViewById(preview_thumbimg);
     }
 
-    public void bindCRItem(final Context context, CommonRecyclerItem commonRecyclerItem){
+    public void bindCRItem(final Context context, final CommonRecyclerItem commonRecyclerItem){
         final ComicCardPreviewItem comicCardPreviewItem = (ComicCardPreviewItem) commonRecyclerItem.getItem();
         Picasso.with(context).load(comicCardPreviewItem.getThumbImageUrl()).error(R.drawable.ic_menu_manage).into(previewThumbImageView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-
+                    //Intent intent = new Intent(v.getContext(), ComicImagePlayerActivity.class);
+                    //intent.putExtra(ComicCardGridItem.EXTRA_ORDER, ComicCardGridItem.getOrder());
+                    //intent.putExtra(comicCardPreviewItem.EXTRA_ID, comicCardPreviewItem.getId());
+                    //v.getContext().startActivity(intent);
+                   // v.ComicDetailsActivity.onReadSampleClick();
+                    comicDetailsActivity= (ComicDetailsActivity) commonRecyclerItem.getOptions().get(0);
+                    comicDetailsActivity.onReadSampleClick(v);
                     Toast.makeText(context,"Preview click",Toast.LENGTH_LONG).show();
 
                 }

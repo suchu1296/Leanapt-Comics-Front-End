@@ -2,6 +2,7 @@ package in.informationworks.learnaptcomic.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,12 +38,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.informationworks.learnaptcomic.Adapters.ComicImagePlayerAdapter;
 import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
 import in.informationworks.learnaptcomic.Models.AppStorageAgent;
 import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
+import in.informationworks.learnaptcomic.Views.HackyViewPager;
 import in.informationworks.learnaptcomic.util.IabHelper;
 import in.informationworks.learnaptcomic.util.IabResult;
 import in.informationworks.learnaptcomic.util.Inventory;
@@ -73,9 +76,13 @@ public class ComicDetailsActivity extends AppCompatActivity {
     RelativeLayout commicDetailsContent;
     Toolbar comicDetailsToolbar;
     ProgressBar progressBar;
-    Button loginButton,readNowButton,downloadButton,buyButton;
+    Button readSampleButton,readNowButton,downloadButton,buyButton;
     Boolean isResumed = false;
     Boolean ispaid;
+    String originalImageUrl,thumbImageUrl;
+   public ArrayList<String> image_resources,thumbImageResources;
+    ComicImagePlayerAdapter comicImagePlayerAdapter;
+    ViewPager viewPager;
     //for purchase
     static final String TAG = "In-App-Billing";
     IabHelper mHelper;
@@ -92,6 +99,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         getData(comicID);
         startFetchingData();
         setStatusBarColour();
+
         isResumed = true;
         //PURCHASE PART
         setConnection();
@@ -114,9 +122,12 @@ public class ComicDetailsActivity extends AppCompatActivity {
         super.onResume();
         if(isResumed)
         {
-           // refreshViewsBasedOnLoginStatus();
+            refreshViewsBasedOnLoginStatus();
+           // getData(comicID);
         }
     }
+
+
 
     private void setComicDetailsToolbar()
     {
@@ -148,27 +159,46 @@ public class ComicDetailsActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.comic_details_progressbar);
         comicDetailsToolbar = (Toolbar) findViewById(R.id.comic_details_toolbar);
         comicSummary = (TextView) findViewById(R.id.comic_summary);
-        loginButton = (Button) findViewById(R.id.login);
+        readSampleButton = (Button) findViewById(R.id.read_sample);
         downloadButton = (Button) findViewById(R.id.downloadButton);
         buyButton = (Button) findViewById(R.id.buy_button);
+        viewPager=(HackyViewPager)findViewById(R.id.comic_image_player_viewpager);
     }
 
     private void refreshViewsBasedOnLoginStatus() {
         if(AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext()))
         {
-            loginButton.setVisibility(View.GONE);
-            downloadButton.setVisibility(View.VISIBLE);
-            buyButton.setVisibility(View.VISIBLE);
+            //readSampleButton.setVisibility(View.GONE);
+            //downloadButton.setVisibility(View.VISIBLE);
+            //buyButton.setVisibility(View.VISIBLE);
             supportInvalidateOptionsMenu();
 
         }
         else
         {
-            loginButton.setVisibility(View.VISIBLE);
-            downloadButton.setVisibility(View.GONE);
-            buyButton.setVisibility(View.GONE);
+            //readSampleButton.setVisibility(View.VISIBLE);
+            //downloadButton.setVisibility(View.GONE);
+            //buyButton.setVisibility(View.GONE);
             supportInvalidateOptionsMenu();
 
+        }
+    }
+
+    public void refreshViewsBasedOnComicPaidOrFree()
+    {
+        if(ispaid)
+        {
+            buyButton.setVisibility(View.VISIBLE);
+            readSampleButton.setVisibility(View.VISIBLE);
+            downloadButton.setVisibility(View.GONE);
+            readNowButton.setVisibility(View.GONE);
+        }
+        else
+        {
+            buyButton.setVisibility(View.GONE);
+            readSampleButton.setVisibility(View.GONE);
+            downloadButton.setVisibility(View.VISIBLE);
+            readNowButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -192,6 +222,8 @@ public class ComicDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
+                        image_resources = new ArrayList<>();
+                        thumbImageResources = new ArrayList<>();
                         jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
                         comicObject = jsonObject.get("comic").getAsJsonObject();
                         comicname=comicObject.get("name").getAsString();
@@ -210,8 +242,21 @@ public class ComicDetailsActivity extends AppCompatActivity {
                         Type listType = new TypeToken<ArrayList<ComicCardPreviewItem>>(){}.getType();
                         receivedComicImages = new Gson().fromJson(comicImagePreviewArray,listType);
                         setDataInRecyclerView();
+                        for(int i=0; i<receivedComicImages.size();i++)
+                        {
+                            if(i>2)
+                                break;
+                            JsonObject image;
+                            image = comicImagePreviewArray.get(i).getAsJsonObject();
+                            originalImageUrl=image.get("original_image_url").getAsString();
+                            image_resources.add(originalImageUrl);
+                            thumbImageUrl=image.get("thumb_image_url").getAsString();
+                            // Toast.makeText(getApplicationContext(),thumbImageUrl,Toast.LENGTH_LONG).show();
+                            thumbImageResources.add(thumbImageUrl);
+                        }
                         commicDetailsContent.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(INVISIBLE);
+                        refreshViewsBasedOnComicPaidOrFree();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -230,10 +275,12 @@ public class ComicDetailsActivity extends AppCompatActivity {
         startActivity(comicDetailsIntent);
     }
 
-    public void onLoginClick(View view)
+    public void onReadSampleClick(View view)
     {
-        Intent login = new Intent(this,LoginActivity.class);
-        startActivity(login);
+  //  comicImagePlayerAdapter= new ComicImagePlayerAdapter(image_resources,thumbImageResources,getApplicationContext(),ComicDetailsActivity.this);
+   // viewPager.setAdapter(comicImagePlayerAdapter);
+        //Toast.makeText(this,"Read sample",Toast.LENGTH_LONG).show();
+        ComicImagesPreviewActivity.launch(ComicDetailsActivity.this,comicID,image_resources,thumbImageResources);
     }
 
     private void startFetchingData()
@@ -245,7 +292,13 @@ public class ComicDetailsActivity extends AppCompatActivity {
     private void setDataInRecyclerView()
     {
         for (ComicCardPreviewItem ComicCardPreviewItem : receivedComicImages.subList(0,3)) {
-            recyclerItems.add(new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE,ComicCardPreviewItem));
+            //if(receivedComicImages.subList(0,3).size()>2)
+              //  break;
+            CommonRecyclerItem cri=new CommonRecyclerItem(CommonRecyclerItem.TYPE_SINGLE_PREVIEW_IMAGE,ComicCardPreviewItem);
+            List<Object> options = new ArrayList<>();
+            options.add(ComicDetailsActivity.this);
+            cri.setOptions(options);
+            recyclerItems.add(cri);
         }
 
     }
@@ -260,9 +313,19 @@ public class ComicDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu (Menu menu)
     {
-        if (!AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext())) {
-            menu.findItem(R.id.action_like).setVisible(false);
+        //if (!AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext())) {
+          //  menu.findItem(R.id.action_like).setVisible(false);
            // Toast.makeText(getApplicationContext(),"disabled",Toast.LENGTH_LONG).show();
+        //}
+        if (!AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext())) {
+            menu.findItem(R.id.action_logout).setVisible(false);
+            menu.findItem(R.id.action_login).setVisible(true);
+            // Toast.makeText(getApplicationContext(),"disabled",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            menu.findItem(R.id.action_login).setVisible(false);
+            menu.findItem(R.id.action_logout).setVisible(true);
         }
         return super.onPrepareOptionsMenu(menu);
 
@@ -286,8 +349,12 @@ public class ComicDetailsActivity extends AppCompatActivity {
         if(id == R.id.action_cart){
             Toast.makeText(this,"cart",Toast.LENGTH_LONG).show();
         }
-        if(id == R.id.action_settings){
-            Toast.makeText(this,"setting",Toast.LENGTH_LONG).show();
+        if(id == R.id.action_login){
+            Intent login = new Intent(this,LoginActivity.class);
+            startActivity(login);
+        }
+        if(id == R.id.action_logout){
+            Toast.makeText(this,"logout",Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
     }

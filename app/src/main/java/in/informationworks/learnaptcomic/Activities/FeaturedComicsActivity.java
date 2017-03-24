@@ -2,6 +2,7 @@ package in.informationworks.learnaptcomic.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,9 +40,11 @@ import java.util.List;
 
 import in.informationworks.learnaptcomic.Adapters.HomeAdapter;
 
+import in.informationworks.learnaptcomic.Models.AppStorageAgent;
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
+import in.informationworks.learnaptcomic.helper.LCHelper;
 
 import static android.provider.ContactsContract.QuickContact.EXTRA_MODE;
 import static in.informationworks.learnaptcomic.Models.SingleItemModel.COMIC_TYPE_FEATURED;
@@ -58,6 +61,11 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     ProgressBar progressbar;
     FloatingActionButton homeButton;
     FloatingActionButton profileButton;
+    int retrivedId;
+    String retrivedEmail;
+    Boolean isLoggedIn;
+    SharedPreferences sharedPref;
+    Boolean isResumed = false;
     /** Android Views **/
     RelativeLayout activityFeaturedComics;
     android.support.v7.widget.RecyclerView recyclerviewFeaturedComics;
@@ -75,13 +83,29 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_featured_comics);
         bindViews();
+       // evaluateSharedPreferences();
         setFeaturedComicsToolbar();
         readintent();
         selectType();
         prepareRecyclerView();
         startFetchingData();
         setStatusBarColour();
+        isResumed = true;
 
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(isResumed)
+        {
+            refreshViewsBasedOnLoginStatus();
+        }
+    }
+
+    private void refreshViewsBasedOnLoginStatus()
+    {
+        supportInvalidateOptionsMenu();
     }
 
 
@@ -95,13 +119,26 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         }
     }
 
+    public void evaluateSharedPreferences()
+    {
+       sharedPref = getApplicationContext().getSharedPreferences("LearnaptComic_preference", getApplicationContext().MODE_PRIVATE);
+        retrivedId = AppStorageAgent.getSharedStoredInt("responseId",getApplicationContext());
+        retrivedEmail = AppStorageAgent.getSharedStoredString("responseEmail",getApplicationContext());
+        isLoggedIn = AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext());
+        String temps = String.valueOf(retrivedId);
+        Toast.makeText(this,temps,Toast.LENGTH_LONG).show();
+    }
+
     private void bindViews(){
         activityFeaturedComics = (RelativeLayout) findViewById(R.id.activity_featured_comics);
         recyclerviewFeaturedComics = (android.support.v7.widget.RecyclerView) findViewById(R.id.recyclerview_featured_comics);
         featuredComicsToolbar = (Toolbar) findViewById(R.id.featured_comics_toolbar);
         homeButton = (FloatingActionButton) findViewById(R.id.home_button);
         profileButton = (FloatingActionButton) findViewById(R.id.profile_button);
+
     }
+
+
 
     public void readintent()
     {
@@ -221,11 +258,29 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         if(id == R.id.action_search){
           Toast.makeText(this,"search",Toast.LENGTH_LONG).show();
         }
-        if(id == R.id.action_settings){
-            Toast.makeText(this,"setting",Toast.LENGTH_LONG).show();
+        if(id == R.id.action_login){
+            Intent login = new Intent(this,LoginActivity.class);
+            startActivity(login);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu)
+    {
+        if (!AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext())) {
+            menu.findItem(R.id.action_logout).setVisible(false);
+            menu.findItem(R.id.action_login).setVisible(true);
+            // Toast.makeText(getApplicationContext(),"disabled",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            menu.findItem(R.id.action_login).setVisible(false);
+            menu.findItem(R.id.action_logout).setVisible(true);
+        }
+        return super.onPrepareOptionsMenu(menu);
+
     }
 
     public void onHomeButtonClick(View view)

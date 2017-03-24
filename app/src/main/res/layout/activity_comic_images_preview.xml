@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_comic_image_player"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack"
+    tools:context="in.informationworks.learnaptcomic.Activities.ComicImagePlayerActivity">
+
+
+    <in.informationworks.learnaptcomic.Views.HackyViewPager
+        android:id="@+id/comic_images_preview_viewpager"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+    </in.informationworks.learnaptcomic.Views.HackyViewPager>
+
+    <RelativeLayout
+        android:id="@+id/relative_preview_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/linearCustomAppbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/TransparentBlack"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:orientation="horizontal"
+            android:gravity="right">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="3dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/closePreviewButton"
+                    android:layout_width="50dp"
+                    android:src="@drawable/close"
+                    android:onClick="onClosePreviewClick"
+                    android:layout_height="50dp"
+                    android:background="@color/TransparentBlack"
+                    android:layout_alignParentLeft="true"
+                    />
+
+                <TextView
+                    android:id="@+id/textView_custom_preview_appbar_title"
+                    android:text="Preview"
+                    android:textColor="#ffffff"
+                    android:textSize="23dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@+id/closePreviewButton"/>
+                </RelativeLayout>
+        </LinearLayout>
+        </RelativeLayout>
+
+
+</RelativeLayout>

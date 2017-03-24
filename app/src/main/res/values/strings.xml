@@ -3,7 +3,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
-    <string name="action_logout">Logout</string>
     <string name="title_activity_full">full</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -14,4 +13,10 @@
     <string name="passworderror">Enter a valid password..</string>
     <string name="confirmPassworderror">Password do not match..</string>
     <string name="mobileNoerror">Mobile no invalid..</string>
+    <string name="action_login">Login/Sign Up</string>
+    <string name="action_logout">Logout</string>
+
+    <string name="title_activity_comic_images_preview">ComicImagesPreviewActivity</string>
+
+
 </resources>
