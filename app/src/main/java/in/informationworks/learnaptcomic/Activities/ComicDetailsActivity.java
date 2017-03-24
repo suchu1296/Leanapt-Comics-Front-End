@@ -1,6 +1,8 @@
 package in.informationworks.learnaptcomic.Activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -46,12 +48,14 @@ import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.Views.HackyViewPager;
+import in.informationworks.learnaptcomic.helper.LCHelper;
 import in.informationworks.learnaptcomic.util.IabHelper;
 import in.informationworks.learnaptcomic.util.IabResult;
 import in.informationworks.learnaptcomic.util.Inventory;
 import in.informationworks.learnaptcomic.util.Purchase;
 
 import static android.view.View.INVISIBLE;
+import static in.informationworks.learnaptcomic.helper.LCHelper.showAlertDialogBox;
 
 public class ComicDetailsActivity extends AppCompatActivity {
     int temp;
@@ -76,7 +80,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
     RelativeLayout commicDetailsContent;
     Toolbar comicDetailsToolbar;
     ProgressBar progressBar;
-    Button readSampleButton,readNowButton,downloadButton,buyButton;
+    Button readSampleButton,readNowButton,downloadButton,buyButton,addToCartButton;
     Boolean isResumed = false;
     Boolean ispaid;
     String originalImageUrl,thumbImageUrl;
@@ -162,6 +166,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         readSampleButton = (Button) findViewById(R.id.read_sample);
         downloadButton = (Button) findViewById(R.id.downloadButton);
         buyButton = (Button) findViewById(R.id.buy_button);
+        addToCartButton=(Button) findViewById(R.id.add_to_cart_button);
         viewPager=(HackyViewPager)findViewById(R.id.comic_image_player_viewpager);
     }
 
@@ -171,6 +176,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
             //readSampleButton.setVisibility(View.GONE);
             //downloadButton.setVisibility(View.VISIBLE);
             //buyButton.setVisibility(View.VISIBLE);
+            //addToCartButton.setVisibility(View.VISIBLE);
             supportInvalidateOptionsMenu();
 
         }
@@ -179,6 +185,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
             //readSampleButton.setVisibility(View.VISIBLE);
             //downloadButton.setVisibility(View.GONE);
             //buyButton.setVisibility(View.GONE);
+            //addToCartButton.setVisibility(View.GONE);
             supportInvalidateOptionsMenu();
 
         }
@@ -189,6 +196,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         if(ispaid)
         {
             buyButton.setVisibility(View.VISIBLE);
+            addToCartButton.setVisibility(View.VISIBLE);
             readSampleButton.setVisibility(View.VISIBLE);
             downloadButton.setVisibility(View.GONE);
             readNowButton.setVisibility(View.GONE);
@@ -196,6 +204,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         else
         {
             buyButton.setVisibility(View.GONE);
+            addToCartButton.setVisibility(View.GONE);
             readSampleButton.setVisibility(View.GONE);
             downloadButton.setVisibility(View.VISIBLE);
             readNowButton.setVisibility(View.VISIBLE);
@@ -274,6 +283,10 @@ public class ComicDetailsActivity extends AppCompatActivity {
         comicDetailsIntent.putExtra("comicID",comicID);
         startActivity(comicDetailsIntent);
     }
+    public void onAddToCartClick(View view)
+    {
+        Toast.makeText(this,"Add to cart",Toast.LENGTH_LONG).show();
+    }
 
     public void onReadSampleClick(View view)
     {
@@ -341,7 +354,14 @@ public class ComicDetailsActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
 
         if(id == R.id.action_like){
-            Toast.makeText(this,"like",Toast.LENGTH_LONG).show();
+            if(AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext()))
+            {
+                Toast.makeText(this,"Write like code",Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+               showAlertDialogBox(this);
+            }
         }
         if(id == R.id.action_share){
             Toast.makeText(this,"share",Toast.LENGTH_LONG).show();
@@ -354,9 +374,21 @@ public class ComicDetailsActivity extends AppCompatActivity {
             startActivity(login);
         }
         if(id == R.id.action_logout){
-            Toast.makeText(this,"logout",Toast.LENGTH_LONG).show();
+            LCHelper.userLogoutFromApp(getApplicationContext());
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onDownload(View view)
+    {
+        if(AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext()))
+        {
+            Toast.makeText(this,"Write download code here",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            showAlertDialogBox(this);
+        }
     }
 
     //PURCHASE PART
@@ -510,4 +542,30 @@ public class ComicDetailsActivity extends AppCompatActivity {
 
         }
     };
+    public void onHomeButtonClick(View view)
+    {
+        Intent intent = new Intent(this,HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+    public void onProfileButtonClick(View view)
+    {
+        if(AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext()))
+        {
+            Intent intent = new Intent(this,ProfileActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+            showAlertDialogBox(this);
+        }
+    }
+    public void onSettingsButtonClick(View view)
+    {
+        Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
+    }
+    public void onLikeButtonClick(View view)
+    {
+        Toast.makeText(this,"Button",Toast.LENGTH_SHORT).show();
+    }
 }

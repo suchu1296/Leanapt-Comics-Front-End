@@ -49,6 +49,7 @@ import in.informationworks.learnaptcomic.helper.LCHelper;
 import static android.provider.ContactsContract.QuickContact.EXTRA_MODE;
 import static in.informationworks.learnaptcomic.Models.SingleItemModel.COMIC_TYPE_FEATURED;
 import static in.informationworks.learnaptcomic.R.style.AppTheme;
+import static in.informationworks.learnaptcomic.helper.LCHelper.showAlertDialogBox;
 
 public class FeaturedComicsActivity extends AppCompatActivity {
     HomeAdapter homeAdapter;
@@ -261,6 +262,8 @@ public class FeaturedComicsActivity extends AppCompatActivity {
         if(id == R.id.action_login){
             Intent login = new Intent(this,LoginActivity.class);
             startActivity(login);
+        }if(id == R.id.action_logout){
+            LCHelper.userLogoutFromApp(getApplicationContext());
         }
 
         return super.onOptionsItemSelected(item);
@@ -290,7 +293,22 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     }
     public void onProfileButtonClick(View view)
     {
-        Intent intent = new Intent(this,ProfileActivity.class);
-        startActivity(intent);
+        if(AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext()))
+        {
+            Intent intent = new Intent(this,ProfileActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+            showAlertDialogBox(this);
+        }
+    }
+    public void onSettingsButtonClick(View view)
+    {
+        Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
+    }
+    public void onLikeButtonClick(View view)
+    {
+        Toast.makeText(this,"Button",Toast.LENGTH_SHORT).show();
     }
 }

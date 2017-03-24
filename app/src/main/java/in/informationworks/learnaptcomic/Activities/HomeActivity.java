@@ -45,6 +45,7 @@ import in.informationworks.learnaptcomic.helper.LCHelper;
 
 import static in.informationworks.learnaptcomic.R.id.action_logout;
 import static in.informationworks.learnaptcomic.R.id.recyclerview_comic_card_list;
+import static in.informationworks.learnaptcomic.helper.LCHelper.showAlertDialogBox;
 
 public class HomeActivity extends AppCompatActivity {
     Context context;
@@ -248,6 +249,31 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onHomeButtonClick(View view)
+    {
+        int x=10;
+    }
+    public void onProfileButtonClick(View view)
+    {
+        if(AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext()))
+        {
+            Intent intent = new Intent(this,ProfileActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+            showAlertDialogBox(this);
+        }
+    }
+    public void onSettingsButtonClick(View view)
+    {
+        Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
+    }
+    public void onLikeButtonClick(View view)
+    {
+        Toast.makeText(this,"Button",Toast.LENGTH_SHORT).show();
     }
 
 

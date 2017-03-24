@@ -149,6 +149,14 @@
             android:layout_marginBottom="5dp"
             android:background="#1Affffff"
             android:text="Buy"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_to_cart_button"
+            android:onClick="onAddToCartClick"
+            android:layout_marginBottom="5dp"
+            android:background="#1Affffff"
+            android:text="Add to Cart"/>
 
     </LinearLayout>
     </RelativeLayout>
@@ -234,8 +242,9 @@
                 android:layout_marginTop="3dp"/>
 
                 </RelativeLayout>
+
         </RelativeLayout>
     </ScrollView>
     </RelativeLayout>
-
+    <include layout="@layout/arc_menu"/>
 </RelativeLayout>
