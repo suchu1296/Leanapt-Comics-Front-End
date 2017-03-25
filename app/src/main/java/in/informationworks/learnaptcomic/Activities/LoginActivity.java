@@ -25,6 +25,7 @@ import java.util.Map;
 
 import in.informationworks.learnaptcomic.Models.AppStorageAgent;
 import in.informationworks.learnaptcomic.R;
+import in.informationworks.learnaptcomic.helper.LCHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -73,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         else {
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "http://192.168.2.30:3000/api/mobile/v1/users/login";
+            String url = "http://"+ LCHelper.getNetworkIp()+":3000/api/mobile/v1/users/login";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override

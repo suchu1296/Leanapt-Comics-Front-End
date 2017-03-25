@@ -25,8 +25,17 @@ import static in.informationworks.learnaptcomic.Models.AppStorageAgent.getShared
  * Created by Riya on 23-Mar-17.
  */
 
+
 public class LCHelper
 {
+
+    private static String networkIp =  "192.168.2.9";
+
+    public static String getNetworkIp() {
+        return networkIp;
+    }
+
+
     public static void userLogoutFromApp(final Context context)
     {
         RequestQueue queue = Volley.newRequestQueue(context);

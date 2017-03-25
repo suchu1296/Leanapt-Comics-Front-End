@@ -126,7 +126,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void loadComicsForType(final String comicType) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.2.30:3000/api/mobile/v1/home/"+comicType+".json";
+        String url = "http://"+LCHelper.getNetworkIp()+":3000/api/mobile/v1/home/"+comicType+".json";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -210,7 +210,7 @@ public class HomeActivity extends AppCompatActivity {
                 String temps = String.valueOf(isLoggedIn);
                 Toast.makeText(this,temps,Toast.LENGTH_LONG).show();
                 RequestQueue queue = Volley.newRequestQueue(this);
-                String url = "http://192.168.2.30:3000/api/mobile/v1/users/logout";
+                String url = "http://"+LCHelper.getNetworkIp()+":3000/api/mobile/v1/users/logout";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {
                             @Override

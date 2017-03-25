@@ -208,7 +208,7 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     public void loadNextDataFromApi()
     {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.2.30:3000/api/mobile/v1/home/"+selectedType+".json?page="+(loadedPages+1);
+        String url ="http://"+LCHelper.getNetworkIp()+":3000/api/mobile/v1/home/"+selectedType+".json?page="+(loadedPages+1);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

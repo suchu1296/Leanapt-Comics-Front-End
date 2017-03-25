@@ -225,7 +225,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
 
     private void getData(int comicID) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.2.30:3000/api/mobile/v1/comics/"+comicID+".json";
+        String url = "http://"+LCHelper.getNetworkIp()+":3000/api/mobile/v1/comics/"+comicID+".json";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

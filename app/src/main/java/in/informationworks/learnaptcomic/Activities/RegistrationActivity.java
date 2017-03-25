@@ -35,6 +35,7 @@ import java.util.Map;
 import in.informationworks.learnaptcomic.Models.AppStorageAgent;
 import in.informationworks.learnaptcomic.Models.ComicCardPreviewItem;
 import in.informationworks.learnaptcomic.R;
+import in.informationworks.learnaptcomic.helper.LCHelper;
 
 public class RegistrationActivity extends AppCompatActivity
 {
@@ -157,23 +158,28 @@ public class RegistrationActivity extends AppCompatActivity
         {
             Toast.makeText(this, "Validation Successfull", Toast.LENGTH_LONG).show();
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "http://192.168.2.30:3000/api/mobile/v1/users/registration";
+            String url = "http://"+ LCHelper.getNetworkIp()+":3000/api/mobile/v1/users/registration";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            user = (new JsonParser()).parse(response).getAsJsonObject();
-                            responseEmail = user.get("email").getAsString();
-                            responseId = user.get("id").getAsInt();
-                            isLoggedIn=true;
-                            //Toast.makeText(RegistrationActivity.this, email, Toast.LENGTH_LONG).show();
-                            AppStorageAgent.setSharedStoreString("responseEmail",responseEmail,getApplicationContext());
-                            AppStorageAgent.setSharedStoreInt("responseId",responseId,getApplicationContext());
-                            AppStorageAgent.setSharedStoreBoolean("isLoggedIn",isLoggedIn,getApplicationContext());
-                            RegistrationActivity.this.finish();
-                            Intent intent = new Intent(RegistrationActivity.this,HomeActivity.class);
-                           // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
+                            if (response.equals("Email already exists")) {
+                                email.setError("Email already registered");
+                            }
+                            else {
+                                user = (new JsonParser()).parse(response).getAsJsonObject();
+                                responseEmail = user.get("email").getAsString();
+                                responseId = user.get("id").getAsInt();
+                                isLoggedIn = true;
+                                //Toast.makeText(RegistrationActivity.this, email, Toast.LENGTH_LONG).show();
+                                AppStorageAgent.setSharedStoreString("responseEmail", responseEmail, getApplicationContext());
+                                AppStorageAgent.setSharedStoreInt("responseId", responseId, getApplicationContext());
+                                AppStorageAgent.setSharedStoreBoolean("isLoggedIn", isLoggedIn, getApplicationContext());
+                                RegistrationActivity.this.finish();
+                                Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                                // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override

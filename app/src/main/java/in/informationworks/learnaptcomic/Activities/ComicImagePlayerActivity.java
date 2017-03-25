@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import in.informationworks.learnaptcomic.Adapters.ComicImagePlayerAdapter;
 import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.Views.HackyViewPager;
+import in.informationworks.learnaptcomic.helper.LCHelper;
 //import static in.informationworks.learnaptcomic.R.id.simpleProgressBar;
 
 public class ComicImagePlayerActivity extends AppCompatActivity {
@@ -84,7 +85,7 @@ public class ComicImagePlayerActivity extends AppCompatActivity {
 
     private void getData(int comicID) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.2.30:3000/api/mobile/v1/comics/"+comicID+".json";
+        String url = "http://"+ LCHelper.getNetworkIp()+":3000/api/mobile/v1/comics/"+comicID+".json";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
