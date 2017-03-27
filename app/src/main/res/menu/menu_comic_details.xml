@@ -17,11 +17,7 @@
         android:orderInCategory="200"
         app:showAsAction="always" />
 
-    <item android:id="@+id/action_cart"
-        android:title="cart"
-        android:icon="@drawable/cart"
-        android:orderInCategory="200"
-        app:showAsAction="always"></item>
+
 
    <item android:id="@+id/action_login"
         android:title="@string/action_login"

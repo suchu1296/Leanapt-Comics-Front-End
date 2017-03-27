@@ -36,10 +36,13 @@
         <activity android:name=".Activities.ForgotPasswordActivity" />
         <activity
             android:name=".Activities.ComicImagesPreviewActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_comic_images_preview"
-            ></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activities.CartActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activities.SettingsActivity"></activity>
     </application>
 
 </manifest>

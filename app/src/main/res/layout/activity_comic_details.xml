@@ -14,7 +14,42 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/CustomComicsBar"/>
+        android:theme="@style/CustomComicsBar">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/linearCustomAppbar"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:layout_marginLeft="50dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="3dp"
+            android:orientation="horizontal"
+            >
+
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/cart_button"
+            android:background="@drawable/cart"
+            android:text="10"
+            android:textSize="15dp"
+            android:textColor="@color/colorRed"
+            android:paddingBottom="14dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="17dp"
+            android:layout_marginBottom="10dp"
+            android:onClick="onCartIconButtonClick"/>
+        </RelativeLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.Toolbar>
 
     <ProgressBar
         android:id="@+id/comic_details_progressbar"
@@ -111,16 +146,18 @@
             android:layout_marginBottom="5dp"
             android:textColor="@color/colorBlack"
             android:layout_marginTop="10dp"
-            android:layout_weight="0.16" />
+            android:layout_weight="0.16"
+            android:textStyle="bold"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/readNowButton"
             android:onClick="onReadNow"
+            android:layout_marginTop="7dp"
             android:layout_marginBottom="5dp"
             android:text="Read Now"
-            android:background="#1Affffff"
+            android:background="@android:drawable/btn_default"
             android:textColor="#000000"
             android:alpha="1"
            />
@@ -131,15 +168,16 @@
             android:id="@+id/downloadButton"
             android:onClick="onDownload"
             android:layout_marginBottom="5dp"
-            android:background="#1Affffff"
+            android:background="@android:drawable/btn_default"
             android:text="Download"/>
         <Button
+            android:layout_marginTop="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/read_sample"
             android:onClick="onReadSampleClick"
             android:layout_marginBottom="5dp"
-            android:background="#1Affffff"
+            android:background="@android:drawable/btn_default"
             android:text="Read Sample"/>
         <Button
             android:layout_width="wrap_content"
@@ -147,7 +185,7 @@
             android:id="@+id/buy_button"
             android:onClick="onBuyClick"
             android:layout_marginBottom="5dp"
-            android:background="#1Affffff"
+            android:background="@android:drawable/btn_default"
             android:text="Buy"/>
         <Button
             android:layout_width="wrap_content"
@@ -155,7 +193,7 @@
             android:id="@+id/add_to_cart_button"
             android:onClick="onAddToCartClick"
             android:layout_marginBottom="5dp"
-            android:background="#1Affffff"
+            android:background="@android:drawable/btn_default"
             android:text="Add to Cart"/>
 
     </LinearLayout>
@@ -171,16 +209,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/sizeLabel"
-            android:textSize="20dp"
-            android:textColor="@color/colorBlack"/>
+            android:textSize="18sp"
+            android:textColor="@color/black424242"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/sizeLabel"
                 android:id="@+id/comicSize"
-                android:textSize="20dp"
-                android:textColor="@color/colorBlack"/>
+                android:textSize="18sp"
+                android:textColor="@color/black424242"/>
 
             <TextView
                 android:text="Pages:"
@@ -189,8 +227,8 @@
                 android:layout_below="@+id/sizeLabel"
                 android:id="@+id/pagesLabel"
                 android:layout_marginTop="5dp"
-                android:textSize="20dp"
-                android:textColor="@color/colorBlack"/>
+                android:textSize="18sp"
+                android:textColor="@color/black424242"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -198,9 +236,9 @@
                 android:layout_below="@+id/comicSize"
                 android:layout_toRightOf="@+id/pagesLabel"
                 android:id="@+id/comicPages"
-                android:textSize="20dp"
+                android:textSize="18sp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/colorBlack"/>
+                android:textColor="@color/black424242"/>
 
             <TextView
                 android:id="@+id/summary_label"
@@ -208,10 +246,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pagesLabel"
-                android:textSize="20dp"
+                android:textSize="18sp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/colorBlack"
-                android:layout_weight="0.16"/>
+                android:layout_weight="0.16"
+                android:textColor="@color/black424242"/>
 
             <TextView
                 android:id="@+id/comic_summary"
@@ -219,9 +257,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/summary_label"
-                android:textSize="18dp"
-                android:textColor="@color/colorBlack"
-                android:layout_weight="0.16"/>
+                android:textSize="18sp"
+                android:layout_weight="0.16"
+                android:textColor="@color/black424242"/>
 
             <TextView
                 android:id="@+id/preview_label"
@@ -230,9 +268,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/comic_summary"
                 android:textSize="20dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/colorBlack"
-                android:layout_weight="0.16"/>
+                android:layout_weight="0.16"
+                android:textStyle="bold"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/preview_recycler_view"

@@ -305,10 +305,12 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     }
     public void onSettingsButtonClick(View view)
     {
-        Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,SettingsActivity.class);
+        startActivity(intent);
     }
     public void onLikeButtonClick(View view)
     {
         Toast.makeText(this,"Button",Toast.LENGTH_SHORT).show();
     }
 }
+

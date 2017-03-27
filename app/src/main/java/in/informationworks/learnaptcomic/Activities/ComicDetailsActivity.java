@@ -31,10 +31,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -80,7 +83,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
     RelativeLayout commicDetailsContent;
     Toolbar comicDetailsToolbar;
     ProgressBar progressBar;
-    Button readSampleButton,readNowButton,downloadButton,buyButton,addToCartButton;
+    Button readSampleButton,readNowButton,downloadButton,buyButton,addToCartButton,cartCountButton;
     Boolean isResumed = false;
     Boolean ispaid;
     String originalImageUrl,thumbImageUrl;
@@ -168,6 +171,7 @@ public class ComicDetailsActivity extends AppCompatActivity {
         buyButton = (Button) findViewById(R.id.buy_button);
         addToCartButton=(Button) findViewById(R.id.add_to_cart_button);
         viewPager=(HackyViewPager)findViewById(R.id.comic_image_player_viewpager);
+        cartCountButton = (Button) findViewById(R.id.cart_button);
     }
 
     private void refreshViewsBasedOnLoginStatus() {
@@ -239,9 +243,26 @@ public class ComicDetailsActivity extends AppCompatActivity {
                         comicpages=comicObject.get("pages_count").getAsString();
                         comicsize=comicObject.get("size").getAsString();
                         ispaid = comicObject.get("paid").getAsBoolean();
-                        comicsummary=comicObject.get("short_description").getAsString();
+                        //comicsummary=comicObject.get("short_description").getAsString();
+                       if((comicObject.get("short_description").toString()).equals("null"))
+                        {
+                            comicsummary= "nothing to display";
+                        }
+                        else
+                        {
+                            comicsummary=comicObject.get("short_description").getAsString();
+                        }
+                        //Toast.makeText(getApplicationContext(),comicObject.get("short_description").toString(),Toast.LENGTH_LONG).show();
                         JsonObject coverImageObject = comicObject.get("cover_image").getAsJsonObject();
-                        comicImageURL = coverImageObject.get("compressed_image_url").getAsString();
+                        // comicImageURL = coverImageObject.get("compressed_image_url").getAsString();
+                        if((coverImageObject.get("compressed_image_url").toString()).equals("null"))
+                        {
+                            int x=10;
+                        }
+                        else
+                        {
+                            comicImageURL=coverImageObject.get("compressed_image_url").getAsString();
+                        }
                         Picasso.with(getApplicationContext()).load(comicImageURL).error(R.drawable.ic_menu_manage).into(imageView4);
                         comicName.setText(comicname);
                         comicPages.setText(comicpages);
@@ -282,6 +303,11 @@ public class ComicDetailsActivity extends AppCompatActivity {
         Intent comicDetailsIntent = new Intent(this,ComicImagePlayerActivity.class);
         comicDetailsIntent.putExtra("comicID",comicID);
         startActivity(comicDetailsIntent);
+    }
+    public void onCartIconButtonClick(View view)
+    {
+        Intent intent = new Intent(this,CartActivity.class);
+        startActivity(intent);
     }
     public void onAddToCartClick(View view)
     {
@@ -366,9 +392,9 @@ public class ComicDetailsActivity extends AppCompatActivity {
         if(id == R.id.action_share){
             Toast.makeText(this,"share",Toast.LENGTH_LONG).show();
         }
-        if(id == R.id.action_cart){
+       /* if(id == R.id.action_cart){
             Toast.makeText(this,"cart",Toast.LENGTH_LONG).show();
-        }
+        }*/
         if(id == R.id.action_login){
             Intent login = new Intent(this,LoginActivity.class);
             startActivity(login);
@@ -562,7 +588,8 @@ public class ComicDetailsActivity extends AppCompatActivity {
     }
     public void onSettingsButtonClick(View view)
     {
-        Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,SettingsActivity.class);
+        startActivity(intent);
     }
     public void onLikeButtonClick(View view)
     {

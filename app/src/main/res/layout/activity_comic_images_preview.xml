@@ -50,7 +50,7 @@
                     android:id="@+id/textView_custom_preview_appbar_title"
                     android:text="Preview"
                     android:textColor="#ffffff"
-                    android:textSize="23dp"
+                    android:textSize="18sp"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_marginTop="10dp"

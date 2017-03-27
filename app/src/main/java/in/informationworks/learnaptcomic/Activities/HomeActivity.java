@@ -269,7 +269,8 @@ public class HomeActivity extends AppCompatActivity {
     }
     public void onSettingsButtonClick(View view)
     {
-        Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,SettingsActivity.class);
+        startActivity(intent);
     }
     public void onLikeButtonClick(View view)
     {
