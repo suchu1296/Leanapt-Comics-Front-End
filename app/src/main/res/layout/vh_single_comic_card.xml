@@ -30,13 +30,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/comic_card_image"
-            android:gravity="center"
             android:padding="5dp"
+            android:lines="2"
+            android:maxLines="2"
             android:text="Sample title"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:background="#1Affffff"
-            android:singleLine="true"/>
+           />
 
         <TextView
             android:layout_width="match_parent"

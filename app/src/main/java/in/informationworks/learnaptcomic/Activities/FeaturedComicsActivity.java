@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,9 +53,10 @@ import static in.informationworks.learnaptcomic.Models.SingleItemModel.COMIC_TYP
 import static in.informationworks.learnaptcomic.R.style.AppTheme;
 import static in.informationworks.learnaptcomic.helper.LCHelper.showAlertDialogBox;
 
-public class FeaturedComicsActivity extends AppCompatActivity {
+public class FeaturedComicsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     HomeAdapter homeAdapter;
     ArrayList<CommonRecyclerItem> recyclerItems;
+    List<SingleItemModel> receivedComicsData;
     List<SingleItemModel> comicDataModels;
     Context context;
     int loadedPages=0, mode;
@@ -217,7 +220,7 @@ public class FeaturedComicsActivity extends AppCompatActivity {
                         JsonObject jsonObject = (new JsonParser()).parse(response).getAsJsonObject();
                         JsonArray jComicsArray = jsonObject.getAsJsonArray("comics");
                         Type listType = new TypeToken<ArrayList<SingleItemModel>>(){}.getType();
-                        List<SingleItemModel> receivedComicsData = new Gson().fromJson(jComicsArray,listType);
+                        receivedComicsData = new Gson().fromJson(jComicsArray,listType);
                         setDataInRecyclerView(receivedComicsData);
                         if(jsonObject.get("totalentries").getAsInt()>comicDataModels.size()) {
                             loadNextDataFromApi();
@@ -244,6 +247,9 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_featured_comics, menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(this);
         return true;
     }
 
@@ -256,9 +262,9 @@ public class FeaturedComicsActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
 
-        if(id == R.id.action_search){
-          Toast.makeText(this,"search",Toast.LENGTH_LONG).show();
-        }
+        //if(id == R.id.action_search){
+          //Toast.makeText(this,"search",Toast.LENGTH_LONG).show();
+        //}
         if(id == R.id.action_login){
             Intent login = new Intent(this,LoginActivity.class);
             startActivity(login);
@@ -311,6 +317,34 @@ public class FeaturedComicsActivity extends AppCompatActivity {
     public void onLikeButtonClick(View view)
     {
         Toast.makeText(this,"Button",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        newText = newText.toLowerCase();
+        List<CommonRecyclerItem> recyclerItems1 = new ArrayList<>();
+
+        for(SingleItemModel singleItemModel : comicDataModels)
+        {
+            String name = singleItemModel.getName().toLowerCase();
+            if (name.contains(newText)) {
+                recyclerItems1.add(new CommonRecyclerItem(CommonRecyclerItem.TYPT_HORIZONTAL_COMIC_CARD, singleItemModel));
+               // Toast.makeText(this, recyclerItems.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        Toast.makeText(this,String.valueOf(recyclerItems1.size()),Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,newText,Toast.LENGTH_SHORT).show();
+      //  homeAdapter.setFilter(recyclerItems);
+        homeAdapter = new HomeAdapter(this,recyclerItems1);
+        recyclerviewFeaturedComics.setAdapter(homeAdapter);
+        homeAdapter.notifyDataSetChanged();
+
+        return true;
     }
 }
 

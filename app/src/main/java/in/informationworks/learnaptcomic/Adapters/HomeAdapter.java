@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
+import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.viewholders.ComicCardGridListViewHolder;
 import in.informationworks.learnaptcomic.viewholders.CoverItemListViewHolder;
@@ -27,6 +29,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
     List<CommonRecyclerItem> recyclerItems;
     Context context;
     LayoutInflater inflater;
+    ArrayList<SingleItemModel> arrayList = new ArrayList<>();
 
     public HomeAdapter(Context context, List<CommonRecyclerItem> recyclerItems) {
         this.context = context;
@@ -104,4 +107,6 @@ public class HomeAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return recyclerItems.size();
     }
+
+
 }
