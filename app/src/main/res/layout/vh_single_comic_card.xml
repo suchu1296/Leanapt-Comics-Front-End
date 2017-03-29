@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     app:cardUseCompatPadding="true"
-    app:cardElevation="7dp">
+    app:cardElevation="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
 
         <ImageView
             android:id="@+id/comic_card_image"
-            android:layout_width="120dp"
+            android:layout_width="130dp"
             android:layout_height="155dp"
             android:src="@drawable/camel"
             android:layout_gravity="center_horizontal"
@@ -37,7 +37,7 @@
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:background="#1Affffff"
-           />
+            android:ellipsize="end"/>
 
         <TextView
             android:layout_width="match_parent"
