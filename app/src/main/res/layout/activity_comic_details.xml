@@ -169,7 +169,8 @@
             android:onClick="onDownload"
             android:layout_marginBottom="5dp"
             android:background="@android:drawable/btn_default"
-            android:text="Download"/>
+            android:text="Download"
+            />
         <Button
             android:layout_marginTop="7dp"
             android:layout_width="wrap_content"
