@@ -33,12 +33,12 @@ public class TryDownloadActivity extends AppCompatActivity {
     Context context;
     ImageView imageView;
     String IMAGE_URL;
-    String name =  "hello.jpg";
-    String root = Environment.getExternalStorageDirectory().toString();
+    String name =  "1.jpg";
+    String root = Environment.getExternalStorageDirectory().toString()+"/Comics/"+84;
     Bitmap image;
     ImageLoader imageLoader;
     URL url;
-    static ImageView img;
+     static ImageView img;
     Uri uri;
     static HttpURLConnection connection;
     Bitmap bitmap;
@@ -48,7 +48,7 @@ public class TryDownloadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_try_download);
-        internalRoot = getApplicationContext().getFilesDir().toString();
+        internalRoot = getApplicationContext().getFilesDir().toString()+"/Comics"+84;
         IMAGE_URL = "https://www.wired.com/wp-content/uploads/2015/09/google-logo-1200x630.jpg";
         imageLoader = ImageLoader.getInstance();
          img=(ImageView)findViewById(R.id.tryimageView);
@@ -169,10 +169,10 @@ public class TryDownloadActivity extends AppCompatActivity {
 
     public void onRetriveClick(View view)
     {
-        //loadImageFromStorage(internalRoot + "/c1");
+        //loadImageFromStorage(context,internalRoot,name);
     }
 
-    public static void loadImageFromStorage(String path)
+    public static void loadImageFromStorage(String path, String name)
     {
         //EXTERNAL
         /*try {
@@ -189,16 +189,18 @@ public class TryDownloadActivity extends AppCompatActivity {
         {
             e.printStackTrace();
         }*/
+      //  Toast.makeText(context,path,Toast.LENGTH_LONG).show();
 
          try {
 
             //Toast.makeText(context,path,Toast.LENGTH_LONG).show();
-            File f=new File(path, "hello.jpg");
+            File f=new File(path, name);
 
-            Bitmap b = BitmapFactory.decodeFile(path+"/hello.jpg");
+
+            Bitmap b = BitmapFactory.decodeFile(path+"/"+name);
            // Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
 
-            img.setImageBitmap(b);
+          //  img.setImageBitmap(b);
         }
         catch (Exception e)
         {

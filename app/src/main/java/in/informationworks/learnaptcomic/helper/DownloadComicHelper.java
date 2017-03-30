@@ -1,6 +1,7 @@
 package in.informationworks.learnaptcomic.helper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import in.informationworks.learnaptcomic.Activities.ComicDetailsActivity;
 import in.informationworks.learnaptcomic.Activities.TryDownloadActivity;
 
 /**
@@ -30,7 +32,8 @@ public class DownloadComicHelper extends AsyncTask<String,Integer,String> {
     static HttpURLConnection connection;
     Bitmap bitmap;
     String internalRoot;
-    String name =  "hello.jpg";
+    String name;
+    String root;
 
     private String TAG = "asyncTask";
 
@@ -47,7 +50,9 @@ public class DownloadComicHelper extends AsyncTask<String,Integer,String> {
     }
     @Override
     protected String doInBackground(String... params) {
-        internalRoot = context.getFilesDir().toString();
+        internalRoot = context.getFilesDir().toString()+"/Comics/"+params[1];
+        root = Environment.getExternalStorageDirectory().toString()+"/Comics/"+params[1];
+        name = params[2]+".jpg";
 
         try {
 
@@ -65,7 +70,7 @@ public class DownloadComicHelper extends AsyncTask<String,Integer,String> {
 
         try {
 
-            File myDir = new File(internalRoot+"/c1");
+            File myDir = new File(internalRoot);
 
             if (!myDir.exists()) {
                 myDir.mkdirs();
@@ -83,29 +88,11 @@ public class DownloadComicHelper extends AsyncTask<String,Integer,String> {
             // some action
         }
 
-       // Toast.makeText(context,bitmap.toString(),Toast.LENGTH_LONG).show();
-
-
-
         return internalRoot;
 
     }
 
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
 
-            final URL url = new URL(src);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     @Override
     protected void onProgressUpdate(Integer... progress) {
@@ -116,31 +103,15 @@ public class DownloadComicHelper extends AsyncTask<String,Integer,String> {
     protected void onPostExecute(String imagePath) {
         super.onPostExecute(imagePath);
        // saveImage(context,imagePath);
-        TryDownloadActivity.loadImageFromStorage(imagePath+"/c1");
+       // ComicDetailsActivity.loadImageFromStorage(imagePath,name);
+
+        ComicDetailsActivity.loadImageFromStorage(imagePath,name);
+       // Intent intent = new Intent(context,TryDownloadActivity.class);
+       // context.startActivity(intent);
 
     }
 
-    public void saveImage(Context context, Bitmap bitmap){
-        try {
 
-            File myDir = new File(internalRoot+"/c1");
-
-            if (!myDir.exists()) {
-                myDir.mkdirs();
-            }
-
-            //String name = new Date().toString() + ".jpg";
-            myDir = new File(myDir, name);
-            FileOutputStream out = new FileOutputStream(myDir);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-
-
-            out.flush();
-            out.close();
-        } catch(Exception e){
-            // some action
-        }
-    }
 
 
 

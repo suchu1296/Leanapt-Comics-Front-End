@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +41,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +54,7 @@ import in.informationworks.learnaptcomic.Models.CommonRecyclerItem;
 import in.informationworks.learnaptcomic.Models.SingleItemModel;
 import in.informationworks.learnaptcomic.R;
 import in.informationworks.learnaptcomic.Views.HackyViewPager;
+import in.informationworks.learnaptcomic.helper.DownloadComicHelper;
 import in.informationworks.learnaptcomic.helper.LCHelper;
 import in.informationworks.learnaptcomic.util.IabHelper;
 import in.informationworks.learnaptcomic.util.IabResult;
@@ -410,10 +414,32 @@ public class ComicDetailsActivity extends AppCompatActivity {
         if(AppStorageAgent.getSharedStoredBoolean("isLoggedIn",getApplicationContext()))
         {
             Toast.makeText(this,"Write download code here",Toast.LENGTH_LONG).show();
+            for(int i=0; i<receivedComicImages.size();i++)
+            {
+                JsonObject image;
+                image = comicImagePreviewArray.get(i).getAsJsonObject();
+                originalImageUrl=image.get("original_image_url").getAsString();
+                new DownloadComicHelper(ComicDetailsActivity.this).execute(originalImageUrl,String.valueOf(comicID),String.valueOf(i+1));
+
+            }
+
         }
         else
         {
             showAlertDialogBox(this);
+        }
+
+
+    }
+
+    public static void loadImageFromStorage(String path,String name) {
+
+        try {
+            File f = new File(path, name);
+            Bitmap b = BitmapFactory.decodeFile(path+"/"+name);
+           // imageView4.setImageBitmap(b);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
