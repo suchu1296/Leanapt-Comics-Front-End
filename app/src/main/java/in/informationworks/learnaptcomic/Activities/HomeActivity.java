@@ -276,6 +276,11 @@ public class HomeActivity extends AppCompatActivity {
     {
         Toast.makeText(this,"Button",Toast.LENGTH_SHORT).show();
     }
+    public void onGoToDownloadClick(View view)
+    {
+        Intent intent = new Intent(this,TryDownloadActivity.class);
+        startActivity(intent);
+    }
 
 
 }

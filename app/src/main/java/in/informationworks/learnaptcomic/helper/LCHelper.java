@@ -29,7 +29,7 @@ import static in.informationworks.learnaptcomic.Models.AppStorageAgent.getShared
 public class LCHelper
 {
 
-    private static String networkIp =  "192.168.2.30";
+    private static String networkIp =  "192.168.2.13";
 
     public static String getNetworkIp() {
         return networkIp;

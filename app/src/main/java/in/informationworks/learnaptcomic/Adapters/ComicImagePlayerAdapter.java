@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.view.LayoutInflater;
@@ -19,7 +20,10 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 
 import in.informationworks.learnaptcomic.Activities.ComicDetailsActivity;
 import in.informationworks.learnaptcomic.Activities.ComicImagePlayerActivity;
@@ -91,6 +95,24 @@ public class ComicImagePlayerAdapter extends PagerAdapter {
                 photoView.setImageBitmap(bitmap);
                 thumbImageView.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE );
+                /*try {
+
+                    String name = new Date().toString() + ".jpg";
+                    Toast.makeText(context,context.getFilesDir().toString(),Toast.LENGTH_LONG).show();
+                    File myDir = new File(context.getFilesDir(), name);
+
+                    if (!myDir.exists()) {
+                        myDir.mkdirs();
+                    }
+
+                    FileOutputStream out = new FileOutputStream(myDir);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+
+                    out.flush();
+                    out.close();
+                } catch(Exception e){
+                    // some action
+                }*/
             }
 
             @Override
