@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/try_button"
         android:text="go to download"
+        android:visibility="gone"
         android:onClick="onGoToDownloadClick"
         />
     <android.support.v7.widget.RecyclerView

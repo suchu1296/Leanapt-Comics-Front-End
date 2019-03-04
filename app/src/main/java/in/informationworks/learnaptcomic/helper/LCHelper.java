@@ -39,7 +39,7 @@ public class LCHelper
     public static void userLogoutFromApp(final Context context)
     {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://192.168.2.30:3000/api/mobile/v1/users/logout";
+        String url = "http://"+networkIp+":3000/api/mobile/v1/users/logout";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
